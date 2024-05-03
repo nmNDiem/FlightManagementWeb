@@ -11,8 +11,10 @@ class Airport(db.Model):
     longitude = Column(Float)
     latitude = Column(Float)
     sign = Column(String(50))
-    departure_airports = relationship("FlightRoute", backref="departure", lazy=True)
-    destination_airports = relationship("FlightRoute", backref="destination", lazy=True)
+    flight_routes_departure = relationship('FlightRoute', foreign_keys='[FlightRoute.departure_airport_id]',
+                                           back_populates='departure_airport')
+    flight_routes_destination = relationship('FlightRoute', foreign_keys='[FlightRoute.destination_airport_id]',
+                                             back_populates='destination_airport')
 
     def __str__(self):
         return self.name
@@ -29,13 +31,18 @@ class FlightRouteType(db.Model):
 
 class FlightRoute(db.Model):
     id = Column(Integer, autoincrement=True, primary_key=True)
+    name = Column(String(30))
     flight_route_type_id = Column(Integer, ForeignKey(FlightRouteType.id), nullable=False)
     departure_airport_id = Column(Integer, ForeignKey(Airport.id), nullable=False)
     destination_airport_id = Column(Integer, ForeignKey(Airport.id), nullable=False)
+    departure_airport = relationship('Airport', foreign_keys=[departure_airport_id],
+                                     back_populates='flight_routes_departure')
+    destination_airport = relationship('Airport', foreign_keys=[destination_airport_id],
+                                       back_populates='flight_routes_destination')
     flights = relationship('Flight', backref='flight_route', lazy=True)
 
     def __str__(self):
-        return self.id
+        return self.name
 
 
 class Plane(db.Model):
@@ -46,7 +53,7 @@ class Plane(db.Model):
     seats_2 = Column(Integer)
     seats = relationship('Seat', backref='plane', cascade='all, delete-orphan', lazy=True)
     flights = relationship('Flight', secondary='flight_plane', lazy='subquery',
-                           backref=backref('planes', lazy=True))
+                           backref=backref('planes_list', lazy=True))
 
     def __str__(self):
         return self.name
@@ -76,7 +83,7 @@ class Flight(db.Model):
     departure_time = Column(DateTime)
     flight_time = Column(Integer)
     planes = relationship('Plane', secondary='flight_plane', lazy='subquery',
-                          backref=backref('flights', lazy=True))
+                          backref=backref('flights_list', lazy=True))
 
     def __str__(self):
         return self.id
