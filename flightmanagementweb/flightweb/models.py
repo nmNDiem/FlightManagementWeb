@@ -31,7 +31,7 @@ class FlightRouteType(db.Model):
 
 class FlightRoute(db.Model):
     id = Column(Integer, autoincrement=True, primary_key=True)
-    name = Column(String(30))
+    name = Column(String(30), nullable=False)
     flight_route_type_id = Column(Integer, ForeignKey(FlightRouteType.id), nullable=False)
     departure_airport_id = Column(Integer, ForeignKey(Airport.id), nullable=False)
     destination_airport_id = Column(Integer, ForeignKey(Airport.id), nullable=False)
@@ -46,7 +46,7 @@ class FlightRoute(db.Model):
 
 
 class Plane(db.Model):
-    id = Column(Integer, autoincrement=True, primary_key=True)
+    id = Column(Integer, primary_key=True)
     name = Column(String(20))
     aircraft_license_plate = Column(String(7), nullable=False)
     seats_1 = Column(Integer)
@@ -56,7 +56,7 @@ class Plane(db.Model):
                            backref=backref('planes_list', lazy=True))
 
     def __str__(self):
-        return self.name
+        return self.aircraft_license_plate
 
 
 class SeatType(db.Model):
@@ -70,23 +70,25 @@ class SeatType(db.Model):
 
 class Seat(db.Model):
     id = Column(Integer, autoincrement=True, primary_key=True)
-    seat_type_id = Column(Integer, ForeignKey(SeatType.id))
-    plane_id = Column(Integer, ForeignKey(Plane.id))
+    name = Column(String(3), nullable=False)
+    seat_type_id = Column(Integer, ForeignKey(SeatType.id), nullable=False)
+    plane_id = Column(Integer, ForeignKey(Plane.id), nullable=False)
 
     def __str__(self):
-        return self.id
+        return self.name
 
 
 class Flight(db.Model):
-    id = Column(Integer, autoincrement=True, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False)
     flight_route_id = Column(Integer, ForeignKey(FlightRoute.id), nullable=False)
     departure_time = Column(DateTime)
-    flight_time = Column(Integer)
+    duration = Column(Integer)
     planes = relationship('Plane', secondary='flight_plane', lazy='subquery',
                           backref=backref('flights_list', lazy=True))
 
     def __str__(self):
-        return self.id
+        return self.name
 
 
 flight_plane = db.Table('flight_plane',
