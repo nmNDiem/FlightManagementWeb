@@ -1,7 +1,8 @@
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flightweb import app, db
-from models import Flight, FlightRoute, FlightRouteType, Airport, Plane, Seat, SeatType
+from models import (Flight, FlightRoute, FlightRouteType, Airport, Plane, Seat, SeatType,
+                    FlightSchedule, StopPoint)
 
 
 class FlightView(ModelView):
@@ -42,16 +43,16 @@ class FlightRouteTypeView(ModelView):
 
 
 class AirportView(ModelView):
-    column_list = ['id', 'name', 'address', 'longitude', 'latitude', 'sign',
+    column_list = ['id', 'sign', 'name', 'address', 'longitude', 'latitude',
                    'flight_routes_departure', 'flight_routes_destination']
     column_searchable_list = ['id', 'name', 'address']
     column_labels = {
         'id': 'ID',
+        'sign': 'Mã sân bay',
         'name': 'Tên sân bay',
         'address': 'Địa chỉ',
         'longitude': 'Kinh độ',
         'latitude': 'Vĩ độ',
-        'sign': 'Biển hiệu',
         'flight_routes_departure': 'Danh sách tuyến bay khởi hành tại đây',
         'flight_routes_destination': 'Danh sách tuyến bay đến đây'
     }
@@ -94,6 +95,14 @@ class SeatTypeView(ModelView):
     }
 
 
+class FlightScheduleView(ModelView):
+    column_list = ['id', 'flight_route_id', 'description', 'stop_points', 'flights']
+
+
+class StopPointView(ModelView):
+    column_list = ['id', 'name', 'airport_id', 'stop_duration', 'flight_schedule_id', 'stop_order']
+
+
 admin = Admin(app, name='Flight Management Website', template_mode='bootstrap4')
 admin.add_view(FlightView(Flight, db.session))
 admin.add_view(FlightRouteView(FlightRoute, db.session))
@@ -102,3 +111,5 @@ admin.add_view(AirportView(Airport, db.session))
 admin.add_view(PlaneView(Plane, db.session))
 admin.add_view(SeatView(Seat, db.session))
 admin.add_view(SeatTypeView(SeatType, db.session))
+admin.add_view(FlightScheduleView(FlightSchedule, db.session))
+admin.add_view(StopPointView(StopPoint, db.session))
