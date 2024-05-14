@@ -1,7 +1,14 @@
-from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey, Boolean
+from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey, Boolean, Enum
 from sqlalchemy.orm import relationship, backref
 from datetime import datetime
 from flightweb import db, app
+from enum import Enum as RoleEnum
+
+
+class UserRole(RoleEnum):
+    ADMIN = 1,
+    EMPLOYEE = 2,
+    CUSTOMER = 3
 
 
 class Airport(db.Model):
@@ -104,17 +111,6 @@ class StopPoint(db.Model):
         return self.name
 
 
-class FlightTeam(db.Model):
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    name = Column(String(30))
-    flights = relationship('Flight', backref='flight_team', lazy=True)
-    users = relationship('User', secondary='flightteam_user', lazy='subquery',
-                         backref=backref('flight_teams_list', lazy=True))
-
-    def __str__(self):
-        return self.name
-
-
 class Flight(db.Model):
     id = Column(Integer, autoincrement=True, primary_key=True)
     name = Column(String(50), nullable=False)
@@ -122,7 +118,6 @@ class Flight(db.Model):
     departure_time = Column(DateTime)
     duration = Column(Integer)
     flight_schedule_id = Column(Integer, ForeignKey(FlightSchedule.id))
-    flight_team_id = Column(Integer, ForeignKey(FlightTeam.id), nullable=False)
     planes = relationship('Plane', secondary='flight_plane', lazy='subquery',
                           backref=backref('flights_list', lazy=True))
     tickets = relationship('Ticket', backref='flight', lazy=True)
@@ -136,32 +131,42 @@ flight_plane = db.Table('flight_plane',
                         Column('plane_id', Integer, ForeignKey(Plane.id), primary_key=True))
 
 
-class UserRole(db.Model):
+class User(db.Model):
+    __abstract__ = True
+
     id = Column(Integer, autoincrement=True, primary_key=True)
-    name = Column(String(25), nullable=False)
-    description = Column(String(50))
-    users = relationship('User', backref='user_role', lazy=True)
+    username = Column(String(20), nullable=False)
+    password = Column(String(20), nullable=False)
+    name = Column(String(50), nullable=False)
+    avatar = Column(String(70))
+    email = Column(String(35), nullable=False)
+    user_role = Column(Enum(UserRole), default=UserRole.CUSTOMER)
+
+
+class Admin(User):
+    statistical_reports = relationship('StatisticalReport', backref='admin', lazy=True)
 
     def __str__(self):
         return self.name
 
 
-class User(db.Model):
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    username = Column(String(20), nullable=False)
-    password = Column(String(20), nullable=False)
-    avatar = Column(String(70), nullable=False)
-    name = Column(String(30), nullable=False)
+class Employee(User):
+    phone_number = Column(Integer, nullable=False)
+    CCCD = Column(Integer, nullable=False)
     birthday = Column(DateTime, nullable=False)
     gender = Column(Boolean, nullable=False)
-    CCCD = Column(Integer, nullable=False)
-    phone_number = Column(Integer, nullable=False)
-    email = Column(String(35), nullable=False)
-    user_role_id = Column(Integer, ForeignKey(UserRole.id), nullable=False)
-    flight_teams = relationship('FlightTeam', secondary='flightteam_user', lazy='subquery',
-                                backref=backref('users_list', lazy=True))
-    statistical_reports = relationship('StatisticalReport', backref='user', lazy=True)
-    receipts = relationship('Receipt', backref='user', lazy=True)
+    tickets = relationship('Ticket', backref='employee', lazy=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Customer(User):
+    CCCD = Column(Integer)
+    phone_number = Column(Integer)
+    birthday = Column(DateTime)
+    gender = Column(Boolean)
+    receipts = relationship('ReceiptUser', backref='customer', lazy=True)
 
     def __str__(self):
         return self.name
@@ -172,15 +177,10 @@ class StatisticalReport(db.Model):
     name = Column(String(30), nullable=False)
     statistical_date = Column(DateTime, default=datetime.now(), nullable=False)
     link_statistical = Column(Integer)
-    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    admin_id = Column(Integer, ForeignKey(Admin.id), nullable=False)
 
     def __str__(self):
         return self.name
-
-
-flightteam_user = db.Table('flightteam_user',
-                           Column('flight_team_id', Integer, ForeignKey(FlightTeam.id), primary_key=True),
-                           Column('user_id', Integer, ForeignKey(User.id), primary_key=True))
 
 
 class Passenger(db.Model):
@@ -203,15 +203,29 @@ class Ticket(db.Model):
     flight_id = Column(Integer, ForeignKey(Flight.id), nullable=False)
     seat_id = Column(Integer, ForeignKey(Seat.id), unique=True, nullable=False)
     passenger_id = Column(Integer, ForeignKey(Passenger.id))
+    employee_id = Column(Integer, ForeignKey(Employee.id))
     receipt_details = relationship('ReceiptDetails', backref='ticket', lazy=True)
 
 
 class Receipt(db.Model):
+    __abstract__ = True
+
     id = Column(Integer, autoincrement=True, primary_key=True)
     booking_time = Column(DateTime, default=datetime.now(), nullable=False)
     payment_time = Column(DateTime)
-    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
-    receipt_details = relationship('ReceiptDetails', backref='receipt', lazy=True)
+
+
+class ReceiptUser(Receipt):
+    customer_id = Column(Integer, ForeignKey(Customer.id), nullable=False)
+    receipt_details = relationship('ReceiptDetails', backref='receipt_user', lazy=True)
+
+
+class ReceiptGuest(Receipt):
+    id = Column(Integer, autoincrement=True, primary_key=True)
+    name = Column(String(50), nullable=False)
+    phone_number = Column(Integer, nullable=False)
+    email = Column(String(35), nullable=False)
+    receipt_details = relationship('ReceiptDetails', backref='receipt_guest', lazy=True)
 
 
 class ReceiptDetails(db.Model):
@@ -219,7 +233,8 @@ class ReceiptDetails(db.Model):
     quantity = Column(Integer, default=0)
     unit_price = Column(Integer, default=0)
     ticket_id = Column(Integer, ForeignKey(Ticket.id), nullable=False)
-    receipt_id = Column(Integer, ForeignKey(Receipt.id), nullable=False)
+    receipt_user_id = Column(Integer, ForeignKey(ReceiptUser.id), nullable=False)
+    receipt_guest_id = Column(Integer, ForeignKey(ReceiptGuest.id), nullable=False)
 
 
 if __name__ == '__main__':
