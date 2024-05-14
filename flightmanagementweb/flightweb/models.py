@@ -155,6 +155,7 @@ class Employee(User):
     CCCD = Column(Integer, nullable=False)
     birthday = Column(DateTime, nullable=False)
     gender = Column(Boolean, nullable=False)
+    tickets = relationship('Ticket', backref='employee', lazy=True)
 
     def __str__(self):
         return self.name
@@ -202,6 +203,7 @@ class Ticket(db.Model):
     flight_id = Column(Integer, ForeignKey(Flight.id), nullable=False)
     seat_id = Column(Integer, ForeignKey(Seat.id), unique=True, nullable=False)
     passenger_id = Column(Integer, ForeignKey(Passenger.id))
+    employee_id = Column(Integer, ForeignKey(Employee.id))
     receipt_details = relationship('ReceiptDetails', backref='ticket', lazy=True)
 
 
