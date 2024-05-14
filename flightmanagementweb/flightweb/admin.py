@@ -3,7 +3,7 @@ from flask_admin.contrib.sqla import ModelView
 from flightweb import app, db
 from models import (Flight, FlightRoute, FlightRouteType, Airport, Plane, Seat, SeatType,
                     FlightSchedule, StopPoint, StatisticalReport, Employee, Customer,
-                    Passenger, Ticket, ReceiptDetails, ReceiptUser, ReceiptGuest)
+                    Passenger, Ticket, ReceiptDetails, ReceiptUser, ReceiptGuest, PaymentMethod)
 
 
 class FlightView(ModelView):
@@ -122,3 +122,4 @@ admin.add_view(ModelView(Ticket, db.session))
 admin.add_view(ModelView(ReceiptDetails, db.session))
 admin.add_view(ModelView(ReceiptUser, db.session))
 admin.add_view(ModelView(ReceiptGuest, db.session))
+admin.add_view(ModelView(PaymentMethod, db.session))

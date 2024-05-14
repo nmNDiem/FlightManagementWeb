@@ -204,7 +204,18 @@ class Ticket(db.Model):
     seat_id = Column(Integer, ForeignKey(Seat.id), unique=True, nullable=False)
     passenger_id = Column(Integer, ForeignKey(Passenger.id))
     employee_id = Column(Integer, ForeignKey(Employee.id))
+    note = Column(String(200))
     receipt_details = relationship('ReceiptDetails', backref='ticket', lazy=True)
+
+
+class PaymentMethod(db.Model):
+    id = Column(Integer, autoincrement=True, primary_key=True)
+    name = Column(String(30), nullable=False)
+    receipts_user = relationship('ReceiptUser', backref='user_payment_method', lazy=True)
+    receipts_guest = relationship('ReceiptGuest', backref='guest_payment_method', lazy=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Receipt(db.Model):
@@ -217,6 +228,7 @@ class Receipt(db.Model):
 
 class ReceiptUser(Receipt):
     customer_id = Column(Integer, ForeignKey(Customer.id), nullable=False)
+    payment_method = Column(Integer, ForeignKey(PaymentMethod.id), nullable=False)
     receipt_details = relationship('ReceiptDetails', backref='receipt_user', lazy=True)
 
 
@@ -225,6 +237,7 @@ class ReceiptGuest(Receipt):
     name = Column(String(50), nullable=False)
     phone_number = Column(Integer, nullable=False)
     email = Column(String(35), nullable=False)
+    payment_method = Column(Integer, ForeignKey(PaymentMethod.id), nullable=False)
     receipt_details = relationship('ReceiptDetails', backref='receipt_guest', lazy=True)
 
 
@@ -233,8 +246,8 @@ class ReceiptDetails(db.Model):
     quantity = Column(Integer, default=0)
     unit_price = Column(Integer, default=0)
     ticket_id = Column(Integer, ForeignKey(Ticket.id), nullable=False)
-    receipt_user_id = Column(Integer, ForeignKey(ReceiptUser.id), nullable=False)
-    receipt_guest_id = Column(Integer, ForeignKey(ReceiptGuest.id), nullable=False)
+    receipt_user_id = Column(Integer, ForeignKey(ReceiptUser.id))
+    receipt_guest_id = Column(Integer, ForeignKey(ReceiptGuest.id))
 
 
 if __name__ == '__main__':
