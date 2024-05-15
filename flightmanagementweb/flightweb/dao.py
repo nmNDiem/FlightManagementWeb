@@ -1,6 +1,6 @@
 import hashlib
 from flightweb import db
-from models import Employee, Admin, Customer
+from models import Employee, Admin, Customer, Flight, Airport
 
 
 def get_employee_by_id(id):
@@ -49,4 +49,24 @@ def add_customer(name, username, password, avatar, email, phone, birthday):
     )
     db.session.add(customer)
     db.session.commit()
+
+
+def search_flights(departure, destination, departure_date):
+    query = db.session.query(Flight)
+
+    if departure_date:
+        query = query.filter(db.func.date(Flight.departure_time) == departure_date)
+
+    if departure:
+        query = query.filter(Flight.departure_airport.has(name=departure))
+
+    if destination:
+        query = query.filter(Flight.destination_airport.has(name=destination))
+
+    return query.all()
+
+
+def get_airports():
+    return Airport.query.all()
+
 

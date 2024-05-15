@@ -1,18 +1,36 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, Flask
 import dao
 from flask_login import login_user, logout_user
-from flightweb import app, admin, login
+from flightweb import app, admin, login, app
 import cloudinary.uploader
+
 
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    airports = get_airports()
+    return render_template('searchForm.html', airports=airports)
 
 
 # @app.route('/admin')
 # def admin():
 #     return render_template('admin/index.html')
+
+@app.route('/search_flight', methods=['GET'])
+def search_flight():
+    departure = request.args.get('departure')
+    destination = request.args.get('destination')
+    departure_date = request.args.get('departure_date')
+
+    flights = search_flights(departure, destination, departure_date)
+
+    return render_template('loadFlight.html', flights=flights)
+
+
+# @app.route('/')
+# def index():
+#     airports = get_airports()
+#     return render_template('index.html', airports=airports)
 
 
 @login.user_loader
