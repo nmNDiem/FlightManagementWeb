@@ -5,7 +5,6 @@ from flightweb import app, admin, login, app
 import cloudinary.uploader
 
 
-
 @app.route('/')
 def index():
     airports = dao.get_airports()
@@ -22,7 +21,7 @@ def search_flight():
     destination = request.args.get('destination')
     departure_date = request.args.get('departure_date')
 
-    flights = dao.search_flights((departure, destination, departure_date))
+    flights = dao.search_flights(departure, destination, departure_date)
 
     return render_template('loadFlight.html', flights=flights)
 

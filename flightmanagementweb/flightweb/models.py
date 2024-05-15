@@ -118,6 +118,7 @@ class Flight(db.Model):
     name = Column(String(50), nullable=False)
     flight_route_id = Column(Integer, ForeignKey(FlightRoute.id), nullable=False)
     departure_time = Column(DateTime)
+    destination_time = Column(DateTime)
     duration = Column(Integer)
     flight_schedule_id = Column(Integer, ForeignKey(FlightSchedule.id))
     planes = relationship('Plane', secondary='flight_plane', lazy='subquery',
