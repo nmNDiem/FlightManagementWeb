@@ -8,7 +8,7 @@ import cloudinary.uploader
 
 @app.route('/')
 def index():
-    airports = get_airports()
+    airports = dao.get_airports()
     return render_template('searchForm.html', airports=airports)
 
 
@@ -22,7 +22,7 @@ def search_flight():
     destination = request.args.get('destination')
     departure_date = request.args.get('departure_date')
 
-    flights = search_flights(departure, destination, departure_date)
+    flights = dao.search_flights((departure, destination, departure_date))
 
     return render_template('loadFlight.html', flights=flights)
 
@@ -107,4 +107,4 @@ def register_user():
 
 if __name__ == '__main__':
     with app.app_context():
-        app.run(debug=True)
+        app.run(port=5001, debug=True)
