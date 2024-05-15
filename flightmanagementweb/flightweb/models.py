@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship, backref
 from datetime import datetime
 from flightweb import db, app
 from enum import Enum as RoleEnum
+from flask_login import UserMixin
 
 
 class UserRole(RoleEnum):
@@ -132,14 +133,14 @@ flight_plane = db.Table('flight_plane',
                         Column('plane_id', Integer, ForeignKey(Plane.id), primary_key=True))
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __abstract__ = True
 
     id = Column(Integer, autoincrement=True, primary_key=True)
     username = Column(String(20), nullable=False)
-    password = Column(String(20), nullable=False)
+    password = Column(String(50), nullable=False)
     name = Column(String(50), nullable=False)
-    avatar = Column(String(70))
+    avatar = Column(String(100))
     email = Column(String(35), nullable=False)
     user_role = Column(Enum(UserRole), default=UserRole.CUSTOMER)
 
@@ -163,10 +164,9 @@ class Employee(User):
 
 
 class Customer(User):
-    CCCD = Column(Integer)
     phone_number = Column(Integer)
     birthday = Column(DateTime)
-    gender = Column(Boolean)
+    gender = Column(Boolean, nullable=True)
     receipts = relationship('ReceiptUser', backref='customer', lazy=True)
 
     def __str__(self):
