@@ -1,0 +1,72 @@
+{% extends 'layout/base.html' %}
+<style>
+        .flight-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .flight-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .flight-info img {
+            max-width: 50px;
+            border-radius: 50%;
+        }
+        .flight-details {
+            margin-top: 10px;
+        }
+        .flight-details span {
+            display: block;
+        }
+        .flight-price {
+            font-size: 1.5rem;
+            color: red;
+        }
+        .btn-select {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
+
+{% block title %}Trang chủ{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h1>Kết quả tìm kiếm chuyến bay</h1>
+    {% if flights %}
+        {% for flight in flights %}
+            <div class="flight-card">
+                <div class="flight-info">
+                    <div class="airline-info">
+                        <img src="https://via.placeholder.com/50" alt="Airline Logo"> <!-- Thay bằng logo hãng hàng không -->
+                        <strong>Airline Name</strong> <!-- Thay bằng tên hãng hàng không nếu có -->
+                    </div>
+                    <div>
+                        <span>{{ flight.departure_time.strftime('%H:%M') }} - {{ flight.arrival_time.strftime('%H:%M') }}</span>
+                        <span>{{ flight.departure_airport.sign }} - {{ flight.destination_airport.sign }}</span>
+                    </div>
+                    <div class="flight-price">
+                        {{ flight.price }} VND <!-- Thay bằng giá vé nếu có -->
+                    </div>
+                    <button class="btn btn-select">Chọn</button>
+                </div>
+                <div class="flight-details">
+                    <span>Chi tiết</span>
+                    <span>Giá vé & Quyền lợi</span>
+                    <span>Hoàn vé</span>
+                    <span>Đổi lịch</span>
+                    <span>Khuyến mãi</span>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+    <p>Không tìm thấy chuyến bay phù hợp.</p>
+    {% endif %}
+    <a href="/" class="btn btn-primary">Trở lại trang tìm kiếm</a>
+</div>
+
+{% endblock %}
