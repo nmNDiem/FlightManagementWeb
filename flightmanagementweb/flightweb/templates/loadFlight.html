@@ -46,7 +46,7 @@
                         <strong>Airline Name</strong> <!-- Thay bằng tên hãng hàng không nếu có -->
                     </div>
                     <div>
-                        <span>{{ flight.departure_time.strftime('%H:%M') }} - {{ flight.arrival_time.strftime('%H:%M') }}</span>
+                        <span>{{ flight.departure_time.strftime('%H:%M') }} - {{ flight.destination_time.strftime('%H:%M') }}</span>
                         <span>{{ flight.departure_airport.sign }} - {{ flight.destination_airport.sign }}</span>
                     </div>
                     <div class="flight-price">
