@@ -1,5 +1,5 @@
 import hashlib
-from flightweb import db
+from flightweb import db, app
 from models import Employee, Admin, Customer, Flight, Airport
 
 
@@ -68,5 +68,10 @@ def search_flights(departure, destination, departure_date):
 
 def get_airports():
     return Airport.query.all()
+
+
+if __name__ == '__main__':
+    with app.app_context():
+        pass
 
 
