@@ -3,9 +3,32 @@
 {% block title %}Trang chủ{% endblock %}
 
 {% block content %}
+<style>
+        .hero-section {
+            background-color: rgba(255, 255, 255, 0.2);
+            background-size: cover;
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            border-radius: 10px;
+        }
+        body{
+        background-image: url('/static/bgSearch/bg.jpg');
+    }
+    </style>
+<div>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <h1 class="display-4">Welcome to Flight Management</h1>
+            <p class="lead">Easily manage your flights with our comprehensive tools.</p>
+            <a href="/search" class="btn btn-primary btn-lg">Search Flights</a>
+        </div>
+    </div>
 
 
+</div>
 
-<h1>Chào mừng</h1>
+
 
 {% endblock %}

@@ -52,59 +52,183 @@
             color: #467565;
         }
 </style>
-<div class="container mt-5">
-    <div class="page-title">
-        <h1>CÁC CHUYẾN BAY</h1>
-    </div>
+<!--<div class="container mt-5">-->
+<!--    <div class="page-title">-->
+<!--        <h1>CÁC CHUYẾN BAY</h1>-->
+<!--    </div>-->
+<!--    <div class="flight-card">-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-2">-->
+<!--                <img src="/static/bgSearch/logo.jpg" alt="Airline Logo">-->
+<!--                <p class="mt-2">VN Air</p>-->
+<!--            </div>-->
+<!--            <div class="col-md-3 flight-time">-->
+<!--                <p>10:40 - 11:50</p>-->
+<!--                <p>1h 10m</p>-->
+<!--                <p>SGN - UIH</p>-->
+<!--            </div>-->
+<!--            <div class="col-md-2 flight-price">-->
+<!--                <p>1.229.778 VND/khách</p>-->
+<!--&lt;!&ndash;                <p class="flight-original-price">1.242.200 VND</p>&ndash;&gt;-->
+<!--            </div>-->
+<!--            <div class="col-md-5 flight-actions">-->
+<!--                <button class="btn btn-primary">Chọn</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="row mt-3">-->
+<!--            <div class="col-md-12">-->
+<!--                <ul class="nav nav-pills">-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link active" href="#">Chi tiết</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#">Giá vé & Quyền lợi</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#">Hoàn vé</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#">Đổi lịch</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#">Khuyến mãi</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="flight-card">-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-2">-->
+<!--                <img src="/static/bgSearch/logo.jpg" alt="Airline Logo">-->
+<!--                <p class="mt-2">VN Air</p>-->
+<!--            </div>-->
+<!--            <div class="col-md-3 flight-time">-->
+<!--                <p>14:20 - 15:30</p>-->
+<!--                <p>1h 10m</p>-->
+<!--                <p>SGN - UIH</p>-->
+<!--            </div>-->
+<!--            <div class="col-md-2 flight-price">-->
+<!--                <p>821.000 VND/khách</p>-->
+<!--&lt;!&ndash;                <p class="flight-original-price">1.242.200 VND</p>&ndash;&gt;-->
+<!--            </div>-->
+<!--            <div class="col-md-5 flight-actions">-->
+<!--                <button class="btn btn-primary">Chọn</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="row mt-3">-->
+<!--            <div class="col-md-12">-->
+<!--                <ul class="nav nav-pills">-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link active" href="#">Chi tiết</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#">Giá vé & Quyền lợi</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#">Hoàn vé</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#">Đổi lịch</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#">Khuyến mãi</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="flight-card">-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-2">-->
+<!--                <img src="/static/bgSearch/logo.jpg" alt="Airline Logo">-->
+<!--                <p class="mt-2">VN Air</p>-->
+<!--            </div>-->
+<!--            <div class="col-md-3 flight-time">-->
+<!--                <p>18:30 - 19:40</p>-->
+<!--                <p>1h 10m</p>-->
+<!--                <p>SGN - UIH</p>-->
+<!--            </div>-->
+<!--            <div class="col-md-2 flight-price">-->
+<!--                <p>799.000 VND/khách</p>-->
+<!--&lt;!&ndash;                <p class="flight-original-price">1.242.200 VND</p>&ndash;&gt;-->
+<!--            </div>-->
+<!--            <div class="col-md-5 flight-actions">-->
+<!--                <button class="btn btn-primary">Chọn</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="row mt-3">-->
+<!--            <div class="col-md-12">-->
+<!--                <ul class="nav nav-pills">-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link active" href="#">Chi tiết</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#">Giá vé & Quyền lợi</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#">Hoàn vé</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#">Đổi lịch</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#">Khuyến mãi</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 
-    {% if flights %}
-    <ul>
-        {% for flight in flights %}
-        <div class="flight-card">
-            <div class="row">
-                <div class="col-md-2">
-                    <img src="/static/bgSearch/logo.jpg" alt="Airline Logo">
-                    <p class="mt-2">VN Air</p>
-                </div>
-                <div class="col-md-3 flight-time">
-                    <p>10:40 - 11:50</p>
-                    <p>1h 10m</p>
-                    <p>SGN - UIH</p>
-                </div>
-                <div class="col-md-2 flight-price">
-                    <p>1.229.778 VND/khách</p>
-                    <p class="flight-original-price">1.242.200 VND</p>
-                </div>
-                <div class="col-md-5 flight-actions">
-                    <button class="btn btn-primary">Chọn</button>
-                </div>
+{% if flights %}
+<ul>
+    {% for flight in flights %}
+    <div class="flight-card">
+        <div class="row">
+            <div class="col-md-2">
+                <img src="/static/bgSearch/logo.jpg" alt="Airline Logo">
+                <p class="mt-2">VN Air</p>
             </div>
-            <div class="row mt-3">
-                <div class="col-md-12">
-                    <ul class="nav nav-pills">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">Chi tiết</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Giá vé & Quyền lợi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Hoàn vé</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Đổi lịch</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Khuyến mãi</a>
-                        </li>
-                    </ul>
-                </div>
+            <div class="col-md-3 flight-time">
+                <p>10:40 - 11:50</p>
+                <p>1h 10m</p>
+                <p>SGN - UIH</p>
+            </div>
+            <div class="col-md-2 flight-price">
+                <p>1.229.778 VND/khách</p>
+                <!--                <p class="flight-original-price">1.242.200 VND</p>-->
+            </div>
+            <div class="col-md-5 flight-actions">
+                <button class="btn btn-primary">Chọn</button>
             </div>
         </div>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>Không tìm thấy chuyến bay nào phù hợp.</p>
-    {% endif %}
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Chi tiết</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Giá vé & Quyền lợi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Hoàn vé</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Đổi lịch</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Khuyến mãi</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+</ul>
+{% else %}
+<p>Không tìm thấy chuyến bay nào phù hợp.</p>
+{% endif %}
 </div>
 {% endblock %}

@@ -76,5 +76,3 @@ def get_airports():
 if __name__ == '__main__':
     with app.app_context():
         print(get_all_flights())
-
-
