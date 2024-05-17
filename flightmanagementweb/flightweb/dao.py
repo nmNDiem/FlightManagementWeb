@@ -1,6 +1,8 @@
 import hashlib
-from flightweb import db
-from models import Employee, Admin, Customer, Flight, Airport
+from datetime import datetime
+from sqlalchemy import and_
+from flightweb import db, app
+from models import Employee, Admin, Customer, Flight, Airport, FlightRoute
 
 
 def get_employee_by_id(id):
@@ -51,22 +53,28 @@ def add_customer(name, username, password, avatar, email, phone, birthday):
     db.session.commit()
 
 
-def search_flights(departure, destination, departure_date):
-    query = db.session.query(Flight)
+def search_flights(departure_sign, destination_sign, departure_date):
+    # Chuyển đổi chuỗi ngày thành đối tượng datetime
+    departure_date = datetime.strptime(departure_date, '%Y-%m-%d')
 
-    if departure_date:
-        query = query.filter(db.func.date(Flight.departure_time) == departure_date)
+    flights = Flight.query.join(FlightRoute, Flight.flight_route_id == FlightRoute.id) \
+        .join(Airport, FlightRoute.departure_airport_id == Airport.id) \
+        .filter(Airport.sign == departure_sign,
+                FlightRoute.destination_airport.has(sign=destination_sign),
+                Flight.departure_time >= departure_date).all()
+    return flights
 
-    if departure:
-        query = query.filter(Flight.departure_airport.has(name=departure))
 
-    if destination:
-        query = query.filter(Flight.destination_airport.has(name=destination))
-
-    return query.all()
+def get_all_flights():
+    return Flight.query.all()
 
 
 def get_airports():
     return Airport.query.all()
+
+
+if __name__ == '__main__':
+    with app.app_context():
+        print(get_all_flights())
 
 
