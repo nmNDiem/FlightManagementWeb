@@ -1,29 +1,39 @@
-from flask import render_template, request, redirect, Flask
+from flask import render_template, redirect, Flask, request, jsonify
 import dao
 from flask_login import login_user, logout_user
 from flightweb import app, admin, login, app
 import cloudinary.uploader
+from flightweb import app
+from dao import search_flights
 
 
 @app.route('/')
 def index():
+    return render_template('index.html')
+
+
+@app.route('/search')
+def search():
     airports = dao.get_airports()
     return render_template('searchForm.html', airports=airports)
-
 
 # @app.route('/admin')
 # def admin():
 #     return render_template('admin/index.html')
 
-@app.route('/search_flight', methods=['GET'])
+
+@app.route('/search_flight', methods=['GET', 'POST'])
 def search_flight():
-    departure = request.args.get('departure')
-    destination = request.args.get('destination')
-    departure_date = request.args.get('departure_date')
+    if request.method == 'POST':
+        departure = request.form['departure']
+        destination = request.form['destination']
+        departure_date = request.form['departureDate']
 
-    flights = dao.search_flights(departure, destination, departure_date)
-
-    return render_template('loadFlight.html', flights=flights)
+        flights = dao.search_flights(departure, destination, departure_date)
+        return render_template('loadFlight.html', flights=flights)
+    else:
+        # Trả về form tìm kiếm nếu là GET
+        return render_template('searchForm.html')
 
 
 # @app.route('/')
