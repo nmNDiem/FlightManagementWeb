@@ -1,62 +1,50 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng ký Người dùng</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
+{% extends 'layout/base.html' %}
+
+{% block title %}Đăng ký{% endblock %}
+{% block content %}
     <div class="container">
-        <h1 class="text-center text-info mt-1">ĐĂNG KÝ NGƯỜI DÙNG</h1>
+        <h1 class="text-center text-info mt-1">ĐĂNG KÝ TÀI KHOẢN</h1>
         {% if err_msg %}
         <div class="alert alert-danger">{{ err_msg }}</div>
         {% endif %}
         <form method="post" action="/register" enctype="multipart/form-data">
-            <div class="form-floating mb-3 mt-3">
-                <input type="text" class="form-control" id="name" placeholder="Họ tên" name="name" required>
-                <label for="name">Họ tên</label>
-            </div>
-
-            <div class="form-floating mb-3 mt-3">
-                <input type="text" class="form-control" id="username" placeholder="Tên đăng nhập" name="username" required>
-                <label for="username">Tên đăng nhập</label>
-            </div>
-
-            <div class="form-floating mt-3 mb-3">
-                <input type="password" class="form-control" id="password" placeholder="Mật khẩu" name="password" required>
-                <label for="password">Mật khẩu</label>
-            </div>
-
-            <div class="form-floating mt-3 mb-3">
-                <input type="password" class="form-control" id="confirm" placeholder="Xác nhận mật khẩu" name="confirm" required>
-                <label for="confirm">Xác nhận mật khẩu</label>
-            </div>
-
-            <div class="form-floating mt-3 mb-3">
-                <input type="file" accept=".png,.jpg" class="form-control" id="avatar" name="avatar">
-                <label for="avatar">Ảnh đại diện</label>
-            </div>
-
-            <div class="form-floating mb-3 mt-3">
-                <input type="email" class="form-control" id="email" placeholder="Email" name="email" required>
-                <label for="email">Email</label>
-            </div>
-
-            <div class="form-floating mb-3 mt-3">
-                <input type="tel" class="form-control" id="phone" placeholder="Số điện thoại" name="phone" required>
-                <label for="phone">Số điện thoại</label>
-            </div>
-
-            <div class="form-floating mb-3 mt-3">
-                <input type="date" class="form-control" id="birthday" name="birthday" required>
-                <label for="birthday">Ngày sinh</label>
-            </div>
-
-            <div class="form-floating mt-3 mb-3">
-                <button class="btn btn-success" type="submit">Đăng ký</button>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="name" class="form-label">Họ tên</label>
+                    <input type="text" class="form-control" id="name" placeholder="Họ tên" name="name" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="username" class="form-label">Tên đăng nhập</label>
+                    <input type="text" class="form-control" id="username" placeholder="Tên đăng nhập" name="username" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="password" class="form-label">Mật khẩu</label>
+                    <input type="password" class="form-control" id="password" placeholder="Mật khẩu" name="password" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="confirm" class="form-label">Xác nhận mật khẩu</label>
+                    <input type="password" class="form-control" id="confirm" placeholder="Xác nhận mật khẩu" name="confirm" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="avatar" class="form-label">Ảnh đại diện</label>
+                    <input type="file" accept=".png,.jpg" class="form-control" id="avatar" name="avatar">
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="Email" name="email" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="phone" class="form-label">Số điện thoại</label>
+                    <input type="tel" class="form-control" id="phone" placeholder="Số điện thoại" name="phone" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="birthday" class="form-label">Ngày sinh</label>
+                    <input type="date" class="form-control" id="birthday" name="birthday" required>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-success" type="submit">Đăng ký</button>
+                </div>
             </div>
         </form>
     </div>
-</body>
-</html>
+{% endblock %}
