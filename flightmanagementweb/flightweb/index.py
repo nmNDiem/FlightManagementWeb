@@ -17,6 +17,7 @@ def search():
     airports = dao.get_airports()
     return render_template('searchForm.html', airports=airports)
 
+
 # @app.route('/admin')
 # def admin():
 #     return render_template('admin/index.html')
@@ -41,22 +42,15 @@ def search_flight():
 #     airports = get_airports()
 #     return render_template('index.html', airports=airports)
 
+@app.route("/admin-login", methods=['post'])
+def process_admin_login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    u = dao.auth_user(username=username, password=password)
+    if u:
+        login_user(user=u)
 
-@login.user_loader
-def load_user(user_id):
-    user = dao.get_employee_by_id(user_id)
-    if user:
-        return user
-
-    # user = get_customer_by_id(user_id)
-    # if user:
-    #     return user
-    #
-    # user = get_admin_by_id(user_id)
-    # if user:
-    #     return user
-
-    return None
+    return redirect('/admin')
 
 
 @app.route('/login', methods=['get', 'post'])
@@ -112,6 +106,23 @@ def register_user():
             err_msg = 'Mật khẩu không khớp!'
 
     return render_template('register.html', err_msg=err_msg)
+
+
+@login.user_loader
+def load_user(user_id):
+    user = dao.get_employee_by_id(user_id)
+    if user:
+        return user
+
+    user = dao.get_customer_by_id(user_id)
+    if user:
+        return user
+
+    user = dao.get_admin_by_id(user_id)
+    if user:
+        return user
+
+    return None
 
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 
-from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey, Boolean, Enum
+from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey, Boolean, Enum, BigInteger
 from sqlalchemy.orm import relationship, backref
 from datetime import datetime
 from flightweb import db, app
@@ -154,8 +154,8 @@ class Admin(User):
 
 
 class Employee(User):
-    phone_number = Column(Integer, nullable=False)
-    CCCD = Column(Integer, nullable=False)
+    phone_number = Column(BigInteger, nullable=False)
+    CCCD = Column(BigInteger, nullable=False)
     birthday = Column(DateTime, nullable=False)
     gender = Column(Boolean, nullable=False)
     tickets = relationship('Ticket', backref='employee', lazy=True)
@@ -165,7 +165,7 @@ class Employee(User):
 
 
 class Customer(User):
-    phone_number = Column(Integer)
+    phone_number = Column(BigInteger)
     birthday = Column(DateTime)
     gender = Column(Boolean, nullable=True)
     receipts = relationship('ReceiptUser', backref='customer', lazy=True)
@@ -190,8 +190,8 @@ class Passenger(db.Model):
     name = Column(String(30), nullable=False)
     birthday = Column(DateTime, nullable=False)
     gender = Column(Boolean, nullable=False)
-    CCCD = Column(Integer, nullable=False)
-    phone_number = Column(Integer, nullable=False)
+    CCCD = Column(BigInteger, nullable=False)
+    phone_number = Column(BigInteger, nullable=False)
     email = Column(String(35), nullable=False)
     tickets = relationship('Ticket', backref='passenger', lazy=True)
 
@@ -255,3 +255,51 @@ class ReceiptDetails(db.Model):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
+
+        # import hashlib
+        # from datetime import datetime
+        #
+        # # Create an Admin user
+        # admin = Admin(
+        #     id=1,
+        #     name='Admin User',
+        #     username='admin',
+        #     avatar='https://i.pinimg.com/236x/5f/40/6a/5f406ab25e8942cbe0da6485afd26b71.jpg',
+        #     password=str(hashlib.md5("123456".encode('utf-8')).hexdigest()),
+        #     email='admin@example.com',
+        #     user_role=UserRole.ADMIN
+        # )
+        #
+        # # Create an Employee user
+        # employee = Employee(
+        #     id=2,
+        #     name='Employee User',
+        #     username='employee',
+        #     avatar='https://i.pinimg.com/564x/c5/7f/8a/c57f8ab01f88c9ac40b4724179fc1c54.jpg',
+        #     password=str(hashlib.md5("123456".encode('utf-8')).hexdigest()),
+        #     email='employee@example.com',
+        #     user_role=UserRole.EMPLOYEE,
+        #     phone_number=123456789,
+        #     CCCD=123456789012,
+        #     birthday=datetime(1990, 1, 1),
+        #     gender=True  # True for male, False for female
+        # )
+        #
+        # # Create a Customer user
+        # customer = Customer(
+        #     id=4,
+        #     name='Customer User',
+        #     username='customer',
+        #     avatar='https://i.pinimg.com/564x/5a/54/cf/5a54cfdb6320b05029b8fafb6fdb5f4e.jpg',
+        #     password=str(hashlib.md5("123456".encode('utf-8')).hexdigest()),
+        #     email='customer@example.com',
+        #     user_role=UserRole.CUSTOMER,
+        #     phone_number=987654321,
+        #     birthday=datetime(2003, 5, 5),
+        #     gender=False  # True for male, False for female
+        # )
+        #
+        # # Add all users to the session and commit
+        # db.session.add_all([admin, employee, customer])
+        # db.session.commit()
+
