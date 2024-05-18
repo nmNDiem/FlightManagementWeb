@@ -343,4 +343,3 @@ if __name__ == '__main__':
         # # Add all users to the session and commit
         # db.session.add_all([admin, employee, customer])
         # db.session.commit()
-
