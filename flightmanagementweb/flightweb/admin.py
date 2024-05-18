@@ -6,7 +6,7 @@ from flask import redirect
 from flightweb import app, db
 from models import (Flight, FlightRoute, FlightRouteType, Airport, Plane, Seat, SeatType,
                     StopPoint, StatisticalReport, Employee, Customer,
-                    Passenger, Ticket, ReceiptDetails, ReceiptUser, ReceiptGuest, PaymentMethod)
+                    Passenger, Ticket, ReceiptDetails, Receipt)
 
 
 class FlightView(ModelView):
@@ -140,7 +140,6 @@ admin.add_view(ModelView(Employee, db.session))
 admin.add_view(ModelView(Customer, db.session))
 admin.add_view(MyTicketView(Ticket, db.session))
 admin.add_view(ModelView(ReceiptDetails, db.session))
-admin.add_view(ModelView(ReceiptUser, db.session))
-admin.add_view(ModelView(ReceiptGuest, db.session))
-admin.add_view(ModelView(PaymentMethod, db.session))
+admin.add_view(ModelView(Receipt, db.session))
 admin.add_view(LogoutView(name='Đăng xuất'))
+
