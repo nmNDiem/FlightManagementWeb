@@ -39,7 +39,7 @@ def auth_user(username, password):
     return None
 
 
-def add_customer(name, username, password, avatar, email, phone, birthday):
+def add_customer(name, username, password, avatar, email, phone, cccd, birthday):
     password = str(hashlib.md5(password.strip().encode('utf-8')).hexdigest())
     customer = Customer(
         name=name,
@@ -48,6 +48,7 @@ def add_customer(name, username, password, avatar, email, phone, birthday):
         avatar=avatar,
         email=email,
         phone_number=phone,
+        CCCD=cccd,
         birthday=birthday
     )
     db.session.add(customer)
@@ -74,37 +75,59 @@ def get_airports():
     return Airport.query.all()
 
 
-def count_flights_by_route_by_month(year=datetime.now().year, month=datetime.now().month):
-    return (db.session.query(func.extract('month', Flight.departure_time), FlightRoute.name, func.count(Flight.id))
-            .join(FlightRoute, FlightRoute.id.__eq__(Flight.flight_route_id))
-            .group_by(func.extract('month', Flight.departure_time), FlightRoute.name)
-            .filter(func.extract('month', Flight.departure_time).__eq__(month)).all())
-
-
-def stats_revenue_by_route():
-    return (db.session.query(FlightRoute.id, FlightRoute.name,
-                             func.sum(ReceiptDetails.unit_price * ReceiptDetails.quantity))
-            .join(Flight, Flight.flight_route_id.__eq__(FlightRoute.id), isouter=True)
-            .join(Ticket, Ticket.flight_id.__eq__(Flight.id), isouter=True)
-            .join(ReceiptDetails, ReceiptDetails.ticket_id.__eq__(Ticket.id), isouter=True)
-            .group_by(FlightRoute.id)).all()
+# def count_flights_by_route_by_month(year=datetime.now().year, month=datetime.now().month):
+#     return (db.session.query(func.count(Flight.id))
+#             .join(FlightRoute, FlightRoute.id.__eq__(Flight.flight_route_id))
+#             .group_by(func.extract('month', Flight.departure_time), FlightRoute.id)
+#             .filter(func.extract('month', Flight.departure_time).__eq__(month)).all())
+#
+#
+# def get_total_revenue_by_month(year=datetime.now().year, month=datetime.now().month):
+#     query = (db.session.query(func.extract('year', Receipt.payment_time),
+#                               func.extract('month', Receipt.payment_time),
+#                               func.sum(ReceiptDetails.unit_price * ReceiptDetails.quantity))
+#              .join(ReceiptDetails, ReceiptDetails.receipt_id.__eq__(Receipt.id))
+#              .filter(func.extract('year', Receipt.payment_time).__eq__(year)
+#                      .__and__(func.extract('month', Receipt.payment_time).__eq__(month))))
+#
+#     return query.group_by(func.extract('year', Receipt.payment_time),
+#                           func.extract('month', Receipt.payment_time)).all()
 
 
 def stats_revenue_by_month(year=datetime.now().year, month=datetime.now().month):
-    return db.session.query()
+    # Truy vấn để tính tổng doanh thu theo tuyến bay trong tháng
+    report_data = db.session.query(
+        FlightRoute.name.label('route_name'),
+        func.sum(ReceiptDetails.unit_price * ReceiptDetails.quantity).label('total_revenue'),
+        func.count(Flight.id).label('total_flights')
+    ).join(Flight).join(Ticket).join(ReceiptDetails).join(Receipt) \
+        .filter(func.extract('month', Receipt.payment_time).__eq__(month)) \
+        .group_by(FlightRoute.id) \
+        .all()
+
+    # Tính tổng doanh thu
+    total_revenue = sum([data.total_revenue for data in report_data])
+
+    return report_data
 
 
-def get_total_revenue_by_month(year=datetime.now().year, month=datetime.now().month):
-    query = (db.session.query(func.extract('year', Receipt.payment_time),
-                              func.extract('month', Receipt.payment_time),
-                              func.sum(ReceiptDetails.unit_price * ReceiptDetails.quantity))
-             .join(ReceiptDetails, ReceiptDetails.receipt_id.__eq__(Receipt.id))
-             .filter(func.extract('year', Receipt.payment_time).__eq__(year)
-                     .__and__(func.extract('month', Receipt.payment_time).__eq__(month))))
-    return query.group_by(func.extract('year', Receipt.payment_time),
-                          func.extract('month', Receipt.payment_time)).all()
+def get_total_revenue(year=datetime.now().year, month=datetime.now().month):
+    # Truy vấn để tính tổng doanh thu theo tuyến bay trong tháng
+    report_data = db.session.query(
+        FlightRoute.name.label('route_name'),
+        func.sum(ReceiptDetails.unit_price * ReceiptDetails.quantity).label('total_revenue'),
+        func.count(Flight.id).label('total_flights')
+    ).join(Flight).join(Ticket).join(ReceiptDetails).join(Receipt) \
+        .filter(func.extract('month', Receipt.payment_time).__eq__(month)) \
+        .group_by(FlightRoute.id) \
+        .all()
+
+    # Tính tổng doanh thu
+    total_revenue = sum([data.total_revenue for data in report_data])
+
+    return total_revenue
 
 
 if __name__ == '__main__':
     with app.app_context():
-        print(get_total_revenue_by_month(month=3))
+        print(stats_revenue_by_month())

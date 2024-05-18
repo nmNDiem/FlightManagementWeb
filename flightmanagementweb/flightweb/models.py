@@ -149,6 +149,7 @@ class Employee(User):
 
 class Customer(User):
     phone_number = Column(String(10))
+    CCCD = Column(String(12), nullable=False)
     birthday = Column(DateTime)
     gender = Column(Boolean, nullable=True)
     receipts = relationship('Receipt', backref='customer', lazy=True)
@@ -325,8 +326,8 @@ if __name__ == '__main__':
             password=str(hashlib.md5("123456".encode('utf-8')).hexdigest()),
             email='employee@example.com',
             user_role=UserRole.EMPLOYEE,
-            phone_number=123456789,
-            CCCD=123456789012,
+            phone_number="123456789",
+            CCCD="123456789012",
             birthday=datetime(1990, 1, 1),
             gender=True  # True for male, False for female
         )
@@ -340,7 +341,8 @@ if __name__ == '__main__':
             password=str(hashlib.md5("123456".encode('utf-8')).hexdigest()),
             email='customer@example.com',
             user_role=UserRole.CUSTOMER,
-            phone_number=987654321,
+            phone_number="987654321",
+            CCCD="123456789012",
             birthday=datetime(2003, 5, 5),
             gender=False  # True for male, False for female
         )
