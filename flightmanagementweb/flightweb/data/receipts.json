@@ -1,0 +1,31 @@
+[{
+    "id" : 1,
+    "booking_time" : "2024-03-15 19:20:00",
+    "payment_time" : "2024-03-15 19:21:00",
+    "payment_method_id" : 1,
+    "customer_id" : null
+},{
+    "id" : 2,
+    "booking_time" : "2024-03-17 19:20:00",
+    "payment_time" : "2024-03-17 19:21:00",
+    "payment_method_id" : 4,
+    "customer_id" : null
+},{
+    "id" : 3,
+    "booking_time" : "2024-05-15 19:20:00",
+    "payment_time" : "2024-05-15 19:21:00",
+    "payment_method_id" : 1,
+    "customer_id" : null
+},{
+    "id" : 4,
+    "booking_time" : "2024-03-15 19:20:00",
+    "payment_time" : "2024-03-15 19:21:00",
+    "payment_method_id" : 1,
+    "customer_id" : null
+},{
+    "id" : 5,
+    "booking_time" : "2024-06-20 19:20:00",
+    "payment_time" : "2024-06-20 19:21:00",
+    "payment_method_id" : 1,
+    "customer_id" : null
+}]

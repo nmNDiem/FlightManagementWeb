@@ -137,8 +137,8 @@ class Admin(User):
 
 
 class Employee(User):
-    phone_number = Column(BigInteger, nullable=False)
-    CCCD = Column(BigInteger, nullable=False)
+    phone_number = Column(String(10), nullable=False)
+    CCCD = Column(String(12), nullable=False)
     birthday = Column(DateTime, nullable=False)
     gender = Column(Boolean, nullable=False)
     tickets = relationship('Ticket', backref='employee', lazy=True)
@@ -148,10 +148,11 @@ class Employee(User):
 
 
 class Customer(User):
-    phone_number = Column(BigInteger)
+    phone_number = Column(String(10))
+    CCCD = Column(String(12), nullable=False)
     birthday = Column(DateTime)
     gender = Column(Boolean, nullable=True)
-    receipts = relationship('ReceiptUser', backref='customer', lazy=True)
+    receipts = relationship('Receipt', backref='customer', lazy=True)
 
     def __str__(self):
         return self.name
@@ -195,34 +196,19 @@ class Ticket(db.Model):
 class PaymentMethod(db.Model):
     id = Column(Integer, autoincrement=True, primary_key=True)
     name = Column(String(30), nullable=False)
-    receipts_user = relationship('ReceiptUser', backref='user_payment_method', lazy=True)
-    receipts_guest = relationship('ReceiptGuest', backref='guest_payment_method', lazy=True)
+    receipts = relationship('Receipt', backref='payment_method', lazy=True)
 
     def __str__(self):
         return self.name
 
 
 class Receipt(db.Model):
-    __abstract__ = True
-
     id = Column(Integer, autoincrement=True, primary_key=True)
     booking_time = Column(DateTime, default=datetime.now(), nullable=False)
-    payment_time = Column(DateTime)
-
-
-class ReceiptUser(Receipt):
-    customer_id = Column(Integer, ForeignKey(Customer.id), nullable=False)
-    payment_method = Column(Integer, ForeignKey(PaymentMethod.id), nullable=False)
-    receipt_details = relationship('ReceiptDetails', backref='receipt_user', lazy=True)
-
-
-class ReceiptGuest(Receipt):
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    name = Column(String(50), nullable=False)
-    phone_number = Column(Integer, nullable=False)
-    email = Column(String(35), nullable=False)
-    payment_method = Column(Integer, ForeignKey(PaymentMethod.id), nullable=False)
-    receipt_details = relationship('ReceiptDetails', backref='receipt_guest', lazy=True)
+    payment_time = Column(DateTime, nullable=False)
+    payment_method_id = Column(Integer, ForeignKey(PaymentMethod.id), nullable=False)
+    customer_id = Column(Integer, ForeignKey(Customer.id))
+    receipt_details = relationship('ReceiptDetails', backref='receipt', lazy=True)
 
 
 class ReceiptDetails(db.Model):
@@ -230,8 +216,7 @@ class ReceiptDetails(db.Model):
     quantity = Column(Integer, default=0)
     unit_price = Column(Integer, default=0)
     ticket_id = Column(Integer, ForeignKey(Ticket.id), nullable=False)
-    receipt_user_id = Column(Integer, ForeignKey(ReceiptUser.id))
-    receipt_guest_id = Column(Integer, ForeignKey(ReceiptGuest.id))
+    receipt_id = Column(Integer, ForeignKey(Receipt.id), nullable=False)
 
 
 if __name__ == '__main__':
@@ -288,59 +273,81 @@ if __name__ == '__main__':
                 db.session.add(fl)
         db.session.commit()
 
-        # with open('data/tickets.json', encoding='utf-8') as f8:
-        #     tickets = json.load(f8)
-        #     for t in tickets:
-        #         tk = Ticket(**t)
-        #         db.session.add(tk)
-        # db.session.commit()
+        with open('data/tickets.json', encoding='utf-8') as f8:
+            tickets = json.load(f8)
+            for t in tickets:
+                tk = Ticket(**t)
+                db.session.add(tk)
+        db.session.commit()
+
+        with open('data/paymentMethods.json', encoding='utf-8') as f9:
+            paymentMethods = json.load(f9)
+            for p in paymentMethods:
+                pm = PaymentMethod(**p)
+                db.session.add(pm)
+        db.session.commit()
+
+        with open('data/receipts.json', encoding='utf-8') as f10:
+            receipts = json.load(f10)
+            for r in receipts:
+                rc = Receipt(**r)
+                db.session.add(rc)
+        db.session.commit()
+
+        with open('data/receiptDetails.json', encoding='utf-8') as f11:
+            receiptDetails = json.load(f11)
+            for r in receiptDetails:
+                rd = ReceiptDetails(**r)
+                db.session.add(rd)
+        db.session.commit()
 
 
 
-        # import hashlib
-        # from datetime import datetime
-        #
-        # # Create an Admin user
-        # admin = Admin(
-        #     id=1,
-        #     name='Admin User',
-        #     username='admin',
-        #     avatar='https://i.pinimg.com/236x/5f/40/6a/5f406ab25e8942cbe0da6485afd26b71.jpg',
-        #     password=str(hashlib.md5("123456".encode('utf-8')).hexdigest()),
-        #     email='admin@example.com',
-        #     user_role=UserRole.ADMIN
-        # )
-        #
-        # # Create an Employee user
-        # employee = Employee(
-        #     id=2,
-        #     name='Employee User',
-        #     username='employee',
-        #     avatar='https://i.pinimg.com/564x/c5/7f/8a/c57f8ab01f88c9ac40b4724179fc1c54.jpg',
-        #     password=str(hashlib.md5("123456".encode('utf-8')).hexdigest()),
-        #     email='employee@example.com',
-        #     user_role=UserRole.EMPLOYEE,
-        #     phone_number=123456789,
-        #     CCCD=123456789012,
-        #     birthday=datetime(1990, 1, 1),
-        #     gender=True  # True for male, False for female
-        # )
-        #
-        # # Create a Customer user
-        # customer = Customer(
-        #     id=4,
-        #     name='Customer User',
-        #     username='customer',
-        #     avatar='https://i.pinimg.com/564x/5a/54/cf/5a54cfdb6320b05029b8fafb6fdb5f4e.jpg',
-        #     password=str(hashlib.md5("123456".encode('utf-8')).hexdigest()),
-        #     email='customer@example.com',
-        #     user_role=UserRole.CUSTOMER,
-        #     phone_number=987654321,
-        #     birthday=datetime(2003, 5, 5),
-        #     gender=False  # True for male, False for female
-        # )
-        #
-        # # Add all users to the session and commit
-        # db.session.add_all([admin, employee, customer])
-        # db.session.commit()
+        import hashlib
+        from datetime import datetime
+
+        # Create an Admin user
+        admin = Admin(
+            id=1,
+            name='Admin',
+            username='admin',
+            avatar='https://i.pinimg.com/236x/5f/40/6a/5f406ab25e8942cbe0da6485afd26b71.jpg',
+            password=str(hashlib.md5("123456".encode('utf-8')).hexdigest()),
+            email='admin@example.com',
+            user_role=UserRole.ADMIN
+        )
+
+        # Create an Employee user
+        employee = Employee(
+            id=2,
+            name='Employee User',
+            username='employee',
+            avatar='https://i.pinimg.com/564x/c5/7f/8a/c57f8ab01f88c9ac40b4724179fc1c54.jpg',
+            password=str(hashlib.md5("123456".encode('utf-8')).hexdigest()),
+            email='employee@example.com',
+            user_role=UserRole.EMPLOYEE,
+            phone_number="123456789",
+            CCCD="123456789012",
+            birthday=datetime(1990, 1, 1),
+            gender=True  # True for male, False for female
+        )
+
+        # Create a Customer user
+        customer = Customer(
+            id=4,
+            name='Customer User',
+            username='customer',
+            avatar='https://i.pinimg.com/564x/5a/54/cf/5a54cfdb6320b05029b8fafb6fdb5f4e.jpg',
+            password=str(hashlib.md5("123456".encode('utf-8')).hexdigest()),
+            email='customer@example.com',
+            user_role=UserRole.CUSTOMER,
+            phone_number="987654321",
+            CCCD="123456789012",
+            birthday=datetime(2003, 5, 5),
+            gender=False  # True for male, False for female
+        )
+
+        # Add all users to the session and commit
+        db.session.add_all([admin, employee, customer])
+        db.session.commit()
 

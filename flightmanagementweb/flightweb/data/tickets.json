@@ -84,7 +84,7 @@
     "note" : null
 },{
     "id" : 13,
-    "flight_id" : 13,
+    "flight_id" : 1,
     "seat_id" : 13,
     "passenger_id" : null,
     "employee_id" : null,

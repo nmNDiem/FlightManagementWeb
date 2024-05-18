@@ -200,6 +200,7 @@ def register_user():
                 avatar=avatar_path,
                 email=request.form.get('email'),
                 phone=request.form.get('phone'),
+                cccd=request.form.get('phone'),
                 birthday=request.form.get('birthday')
             )
 
