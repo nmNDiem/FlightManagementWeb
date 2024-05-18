@@ -1,9 +1,13 @@
 import hashlib
 from datetime import datetime
-from sqlalchemy import and_, func
+from sqlalchemy import and_, func, cast, Date
 from flightweb import db, app
+ UpdateDatve
+from models import Employee, Admin, Customer, Flight, Airport, FlightRoute, ReceiptDetails, Ticket, Seat, SeatType, \
+    PaymentMethod, Passenger
+
 from models import (Employee, Admin, Customer, Flight, Airport, FlightRoute, ReceiptDetails, Ticket,
-                    Receipt, Seat)
+                    Receipt, Seat) main
 
 
 def get_employee_by_id(id):
@@ -56,15 +60,25 @@ def add_customer(name, username, password, avatar, email, phone, cccd, birthday)
 
 
 def search_flights(departure_sign, destination_sign, departure_date):
-    # Chuyển đổi chuỗi ngày thành đối tượng datetime
-    departure_date = datetime.strptime(departure_date, '%Y-%m-%d')
+    # Chuyển đổi chuỗi ngày thành đối tượng date
+    departure_date = datetime.strptime(departure_date, '%Y-%m-%d').date()
 
     flights = Flight.query.join(FlightRoute, Flight.flight_route_id == FlightRoute.id) \
         .join(Airport, FlightRoute.departure_airport_id == Airport.id) \
-        .filter(Airport.sign == departure_sign,
-                FlightRoute.destination_airport.has(sign=destination_sign),
-                Flight.departure_time >= departure_date).all()
+        .filter(
+            Airport.sign == departure_sign,
+            FlightRoute.destination_airport.has(sign=destination_sign),
+            cast(Flight.departure_time, Date) == departure_date
+        ).all()
     return flights
+
+
+def select_flight(id):
+    return Flight.query.get(id)
+
+
+def get_airport_id(id):
+    return Airport.query.get(id)
 
 
 def get_all_flights():
@@ -75,6 +89,67 @@ def get_airports():
     return Airport.query.all()
 
 
+
+def get_seat(flight_id, seat_type_id):
+    # Tìm plane_id từ flight_id
+    plane_id = db.session.query(Flight.plane_id).filter(Flight.id == flight_id).scalar()
+
+    # Lấy danh sách ghế trống
+    seats = db.session.query(Seat).join(
+        SeatType, Seat.seat_type_id == SeatType.id
+    ).outerjoin(
+        Ticket, Seat.id == Ticket.seat_id
+    ).filter(
+        SeatType.id == seat_type_id,
+        Seat.plane_id == plane_id,
+        Ticket.passenger_id.is_(None)
+    ).all()
+
+    return seats
+
+
+def get_paymethod():
+    return PaymentMethod.query.all()
+
+
+def get_paymethod_id(id):
+    return PaymentMethod.query.get(id)
+
+
+def get_seat_id(id):
+    return Seat.query.get(id)
+
+
+def create_passenger(last_name, first_name, cccd, email, phone_number, birthday, gender):
+    passenger = Passenger(
+        name=f"{last_name} {first_name}",
+        birthday=birthday,
+        gender=gender,
+        CCCD=cccd,
+        phone_number=phone_number,
+        email=email
+    )
+    db.session.add(passenger)
+    db.session.commit()
+    return passenger
+
+
+def create_ticket(flight_id, seat_id, passenger_id):
+    ticket = Ticket(
+        flight_id=flight_id,
+        seat_id=seat_id,
+        passenger_id=passenger_id
+    )
+    db.session.add(ticket)
+    db.session.commit()
+    return ticket
+
+
+def count_flights_by_route(year=datetime.now().year, month=datetime.now().month):
+    return (db.session.query(FlightRoute.id, FlightRoute.name, func.count(Flight.id))
+            .join(Flight, Flight.flight_route_id.__eq__(FlightRoute.id), isouter=True)
+            .group_by(FlightRoute.id).all())
+=======
 # def count_flights_by_route_by_month(year=datetime.now().year, month=datetime.now().month):
 #     return (db.session.query(func.count(Flight.id))
 #             .join(FlightRoute, FlightRoute.id.__eq__(Flight.flight_route_id))
@@ -92,6 +167,7 @@ def get_airports():
 #
 #     return query.group_by(func.extract('year', Receipt.payment_time),
 #                           func.extract('month', Receipt.payment_time)).all()
+
 
 
 def stats_revenue_by_month(year=datetime.now().year, month=datetime.now().month):
@@ -128,6 +204,18 @@ def get_total_revenue(year=datetime.now().year, month=datetime.now().month):
     return total_revenue
 
 
+def get_ticket_id(id):
+    return Ticket.query.get(id)
+
+
+def get_client_ip(request):
+    if request.headers.get('X-Forwarded-For'):
+        ip = request.headers['X-Forwarded-For'].split(',')[0]
+    else:
+        ip = request.remote_addr
+    return ip
+
+
 if __name__ == '__main__':
     with app.app_context():
-        print(stats_revenue_by_month())
+        print(get_seat_id(2))

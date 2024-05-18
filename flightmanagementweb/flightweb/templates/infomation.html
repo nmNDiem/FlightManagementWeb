@@ -1,0 +1,138 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Thông tin hành khách{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-image: url('/static/bgSearch/bg.jpg');
+    }
+    .cus {
+        display: flex;
+        border: none;
+        align-items: center;
+    }
+    .cus > div {
+        flex: 1;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+</style>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white" align="center">
+            <h2>Thông tin hành khách</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" action="/receipt">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="last_name" class="form-label">Họ</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="first_name" class="form-label">Tên</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cccd" class="form-label">CCCD/CMND</label>
+                            <input type="text" class="form-control" id="cccd" name="cccd" required>
+                        </div>
+                        <div class="mb-3">
+                            <div class="cus">
+                                <div class="mb-3">
+                                    <label for="birthday" class="form-label">Ngày sinh</label>
+                                    <input type="date" class="form-control" id="birthday" name="birthday" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="gender" class="form-label">Giới tính</label>
+                                    <select class="form-select" id="gender" name="gender">
+                                        <option value="true">Nam</option>
+                                        <option value="false">Nữ</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone_number" class="form-label">Số điện thoại</label>
+                            <input type="text" class="form-control" id="phone_number" name="phone_number" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pay_method" class="form-label">Phương thức thanh toán</label>
+                            <select class="form-select" id="pay_method" name="pay_method">
+                                {% for p in pay_method %}
+                                <option value="{{ p.id }}">{{ p.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Thông tin chuyến bay</h5>
+                        <p><strong>Tên chuyến bay:</strong> {{ flight.name }}</p>
+                        <p><strong>Ngày bay:</strong> {{ flight.departure_time.strftime("%d/%m/%Y") }}</p>
+                        <p><strong>Giờ khởi hành:</strong> {{ flight.departure_time.strftime("%H:%M") }}</p>
+                        <p><strong>Nơi đi:</strong> {{ departure.name }} ({{ departure.sign }})</p>
+                        <p><strong>Nơi đến:</strong> {{ destination.name }} ({{ destination.sign }})</p>
+                    </div>
+                </div>
+                <input type="hidden" name="flight_id" value="{{ flight.id }}">
+                <input type="hidden" name="seat_type" value="{{ seat_type }}">
+                <input type="hidden" name="departure_id" value="{{ flight.flight_route.departure_airport.id }}">
+                <input type="hidden" name="destination_id" value="{{ flight.flight_route.destination_airport.id }}">
+                <h5>Thông tin vé</h5>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Vị trí ghế</th>
+                        <th>Loại vé</th>
+                        <th>Giá tiền</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <select class="form-select" id="seat" name="seat">
+                                <option selected>Chọn ghế ngồi</option>
+                                {% for seat in seats %}
+                                <option value="{{ seat.id }}">{{ seat.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+
+                        {% if seat_type == 'business' %}
+                        <td>Thương gia</td>
+                        <td>{{ "{:,.0f}".format(flight.price_seat1) }} VND</td>
+                        {% else %}
+                        <td>Phổ thông</td>
+                        <td>{{ "{:,.0f}".format(flight.price_seat2) }} VND</td>
+                        {% endif %}
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="text-end">
+                    <h4><strong>Tổng tiền:</strong>
+                        {% if seat_type == 'business' %}
+                        {{ "{:,.0f}".format(flight.price_seat1) }} VND
+                        {% else %}
+                        {{ "{:,.0f}".format(flight.price_seat2) }} VND
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Tiếp tục</button>
+                </div>
+            </form>
+
+            <div class="card-footer text-center">
+                <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
