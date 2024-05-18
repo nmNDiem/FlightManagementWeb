@@ -1,0 +1,71 @@
+[{
+    "id" : 1,
+    "sign" : "HAN",
+    "name" : "Nội Bài",
+    "address" : "Phú Minh, Sóc Sơn, Hà Nội",
+    "longitude" : 0,
+    "latitude" : 0
+},{
+    "id" : 2,
+    "sign" : "SGN",
+    "name" : "Tân Sơn Nhất",
+    "address" : "Đ. Trường Sơn, Phường 2, Tân Bình, Thành phố Hồ Chí Minh",
+    "longitude" : 0,
+    "latitude" : 0
+},{
+    "id" : 3,
+    "sign" : "DAD",
+    "name" : "Đà Nẵng",
+    "address" : "Đ Nguyễn Văn Linh, Hòa Thuận Tây, Hải Châu, Đà Nẵng",
+    "longitude" : 0,
+    "latitude" : 0
+},{
+    "id" : 4,
+    "sign" : "CXR",
+    "name" : "Cam Ranh",
+    "address" : "Nguyễn Tất Thành, Cam Nghĩa, Cam Ranh, Khánh Hòa",
+    "longitude" : 0,
+    "latitude" : 0
+},{
+    "id" : 5,
+    "sign" : "PQC",
+    "name" : "Phú Quốc",
+    "address" : "Nguyễn Trường Tộ, Tổ 2, Phú Quốc, Kiên Giang",
+    "longitude" : 0,
+    "latitude" : 0
+},{
+    "id" : 6,
+    "sign" : "HND",
+    "name" : "Haneda",
+    "address" : "Hanedakuko, Ota City, Tokyo, Nhật Bản",
+    "longitude" : 0,
+    "latitude" : 0
+},{
+    "id" : 7,
+    "sign" : "LAX",
+    "name" : "Los Angeles",
+    "address" : "1 World Way, Los Angeles, Mỹ",
+    "longitude" : 0,
+    "latitude" : 0
+},{
+    "id" : 8,
+    "sign" : "JFK",
+    "name" : "New York",
+    "address" : "Queens, New York, Mỹ",
+    "longitude" : 0,
+    "latitude" : 0
+},{
+    "id" : 9,
+    "sign" : "DXB",
+    "name" : "Dubai",
+    "address" : "Dubai",
+    "longitude" : 0,
+    "latitude" : 0
+},{
+    "id" : 10,
+    "sign" : "CDG",
+    "name" : "Charles de Gaulle",
+    "address" : "Roissy-en-France, Pháp",
+    "longitude" : 0,
+    "latitude" : 0
+}]

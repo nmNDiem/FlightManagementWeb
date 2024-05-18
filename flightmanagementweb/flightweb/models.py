@@ -288,12 +288,12 @@ if __name__ == '__main__':
                 db.session.add(fl)
         db.session.commit()
 
-        with open('data/tickets.json', encoding='utf-8') as f8:
-            tickets = json.load(f8)
-            for t in tickets:
-                tk = Ticket(**t)
-                db.session.add(tk)
-        db.session.commit()
+        # with open('data/tickets.json', encoding='utf-8') as f8:
+        #     tickets = json.load(f8)
+        #     for t in tickets:
+        #         tk = Ticket(**t)
+        #         db.session.add(tk)
+        # db.session.commit()
 
 
 
@@ -343,3 +343,4 @@ if __name__ == '__main__':
         # # Add all users to the session and commit
         # db.session.add_all([admin, employee, customer])
         # db.session.commit()
+

@@ -8,19 +8,20 @@ from models import (Flight, FlightRoute, FlightRouteType, Airport, Plane, Seat, 
                     StopPoint, StatisticalReport, Employee, Customer,
                     Passenger, Ticket, ReceiptDetails, ReceiptUser, ReceiptGuest, PaymentMethod)
 
-#
-# class FlightView(ModelView):
-#     column_list = ['id', 'name', 'flight_route_id', 'departure_time', 'duration', 'planes']
-#     column_searchable_list = ['id', 'name']
-#     column_filters = ['flight_route_id', 'departure_time', 'duration']
-#     column_labels = {
-#         'id': 'ID',
-#         'name': 'Tên chuyến bay',
-#         'flight_route_id': 'Tuyến bay',
-#         'departure_time': 'Thời gian khởi hành',
-#         'duration': 'Thời gian bay',
-#         'planes': 'Máy bay sử dụng'
-#     }
+
+class FlightView(ModelView):
+    column_list = ['id', 'name', 'flight_route_id', 'departure_time', 'destination_time', 'duration',
+                   'plane_id', 'price_seat1', 'price_seat2', 'stop_points', 'tickets']
+    column_searchable_list = ['id', 'name']
+    column_filters = ['flight_route_id', 'departure_time', 'duration']
+    column_labels = {
+        'id': 'ID',
+        'name': 'Tên chuyến bay',
+        'flight_route_id': 'Tuyến bay',
+        'departure_time': 'Thời gian khởi hành',
+        'duration': 'Thời gian bay',
+        'planes': 'Máy bay sử dụng'
+    }
 #
 #
 # class FlightRouteView(ModelView):
@@ -103,6 +104,10 @@ from models import (Flight, FlightRoute, FlightRouteType, Airport, Plane, Seat, 
 #     column_list = ['id', 'name', 'airport_id', 'stop_duration', 'flight_schedule_id', 'stop_order']
 
 
+class MyTicketView(ModelView):
+    column_list = ['id', 'flight_id', 'seat_id', 'passenger_id', 'employee_id', 'note']
+
+
 class LogoutView(BaseView):
     @expose('/')
     def index(self):
@@ -111,7 +116,7 @@ class LogoutView(BaseView):
 
 
 admin = Admin(app, name='Flight Management Website', template_mode='bootstrap4')
-# admin.add_view(FlightView(Flight, db.session))
+admin.add_view(FlightView(Flight, db.session))
 # admin.add_view(FlightRouteView(FlightRoute, db.session))
 # admin.add_view(FlightRouteTypeView(FlightRouteType, db.session))
 # admin.add_view(AirportView(Airport, db.session))
@@ -120,7 +125,7 @@ admin = Admin(app, name='Flight Management Website', template_mode='bootstrap4')
 # admin.add_view(SeatTypeView(SeatType, db.session))
 # admin.add_view(StopPointView(StopPoint, db.session))
 
-admin.add_view(ModelView(Flight, db.session))
+# admin.add_view(ModelView(Flight, db.session))
 admin.add_view(ModelView(FlightRoute, db.session))
 admin.add_view(ModelView(FlightRouteType, db.session))
 admin.add_view(ModelView(Airport, db.session))
@@ -133,7 +138,7 @@ admin.add_view(ModelView(StatisticalReport, db.session))
 admin.add_view(ModelView(Passenger, db.session))
 admin.add_view(ModelView(Employee, db.session))
 admin.add_view(ModelView(Customer, db.session))
-admin.add_view(ModelView(Ticket, db.session))
+admin.add_view(MyTicketView(Ticket, db.session))
 admin.add_view(ModelView(ReceiptDetails, db.session))
 admin.add_view(ModelView(ReceiptUser, db.session))
 admin.add_view(ModelView(ReceiptGuest, db.session))

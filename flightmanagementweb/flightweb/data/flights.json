@@ -1,0 +1,101 @@
+[{
+    "id": 1,
+    "name": "Hồ Chí Minh - Hà Nội",
+    "flight_route_id" : 1,
+    "departure_time" : "2024-03-24 01:20:00",
+    "destination_time" : "2024-03-24 03:20:00",
+    "duration" : 2,
+    "plane_id" : 1,
+    "price_seat1" : 4000000,
+    "price_seat2" : 3000000
+}, {
+    "id": 2,
+    "name": "Hồ Chí Minh - Hà Nội",
+    "flight_route_id" : 1,
+    "departure_time" : "2024-03-24 08:20:00",
+    "destination_time" : "2024-03-24 12:20:00",
+    "duration" : 4,
+    "plane_id" : 2,
+    "price_seat1" : 4000000,
+    "price_seat2" : 3000000
+},{
+    "id": 3,
+    "name": "Nha Trang - Đà Nẵng",
+    "flight_route_id" : 2,
+    "departure_time" : "2024-03-24 19:00:00",
+    "destination_time" : "2024-03-24 20:00:00",
+    "duration" : 1,
+    "plane_id" : 3,
+    "price_seat1" : 4000000,
+    "price_seat2" : 3000000
+},{
+    "id": 4,
+    "name": "Hồ Chí Minh - Hà Nội",
+    "flight_route_id" : 1,
+    "departure_time" : "2024-05-26 01:20:00",
+    "destination_time" : "2024-05-26 03:20:00",
+    "duration" : 2,
+    "plane_id" : 4,
+    "price_seat1" : 4000000,
+    "price_seat2" : 3000000
+},{
+    "id": 5,
+    "name": "Nha Trang - Đà Nẵng",
+    "flight_route_id" : 2,
+    "departure_time" : "2024-05-27 01:20:00",
+    "destination_time" : "2024-05-27 03:20:00",
+    "duration" : 2,
+    "plane_id" : 1,
+    "price_seat1" : 4000000,
+    "price_seat2" : 3000000
+},{
+    "id": 6,
+    "name": "Hồ Chí Minh - Phú Quốc",
+    "flight_route_id" : 3,
+    "departure_time" : "2024-06-27 01:20:00",
+    "destination_time" : "2024-05-27 03:20:00",
+    "duration" : 2,
+    "plane_id" : 2,
+    "price_seat1" : 4000000,
+    "price_seat2" : 3000000
+},{
+    "id": 7,
+    "name": "Hồ Chí Minh - Hà Nội",
+    "flight_route_id" : 1,
+    "departure_time" : "2024-05-24 01:20:00",
+    "destination_time" : "2024-05-24 03:20:00",
+    "duration" : 2,
+    "plane_id" : 3,
+    "price_seat1" : 4000000,
+    "price_seat2" : 3000000
+},{
+    "id": 8,
+    "name": "Hồ Chí Minh - Hà Nội",
+    "flight_route_id" : 1,
+    "departure_time" : "2024-05-24 01:20:00",
+    "destination_time" : "2024-05-24 03:20:00",
+    "duration" : 2,
+    "plane_id" : 4,
+    "price_seat1" : 4000000,
+    "price_seat2" : 3000000
+},{
+    "id": 9,
+    "name": "Hồ Chí Minh - Hà Nội",
+    "flight_route_id" : 1,
+    "departure_time" : "2024-05-24 01:20:00",
+    "destination_time" : "2024-05-24 03:20:00",
+    "duration" : 2,
+    "plane_id" : 1,
+    "price_seat1" : 4000000,
+    "price_seat2" : 3000000
+},{
+    "id": 10,
+    "name": "Hà Nội - Dubai",
+    "flight_route_id" : 5,
+    "departure_time" : "2024-05-24 01:20:00",
+    "destination_time" : "2024-05-24 06:20:00",
+    "duration" : 5,
+    "plane_id" : 2,
+    "price_seat1" : 4000000,
+    "price_seat2" : 3000000
+}]
