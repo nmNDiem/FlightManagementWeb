@@ -96,7 +96,9 @@ class Flight(db.Model):
     destination_time = Column(DateTime, nullable=False)
     duration = Column(Float, nullable=False)
     plane_id = Column(Integer, ForeignKey(Plane.id), nullable=False)
-    stop_points = relationship('Flight', backref='flight', lazy=True)
+    price_seat1 = Column(Float)
+    price_seat2 = Column(Float)
+    stop_points = relationship('StopPoint', backref='flight', lazy=True)
     tickets = relationship('Ticket', backref='flight', lazy=True)
 
     def __str__(self):
@@ -182,7 +184,6 @@ class Passenger(db.Model):
 
 class Ticket(db.Model):
     id = Column(Integer, autoincrement=True, primary_key=True)
-    price = Column(Float)
     flight_id = Column(Integer, ForeignKey(Flight.id), nullable=False)
     seat_id = Column(Integer, ForeignKey(Seat.id), unique=True, nullable=False)
     passenger_id = Column(Integer, ForeignKey(Passenger.id))
@@ -237,34 +238,64 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
 
-        # import json
-        # with open('data/airports.json', encoding='utf-8') as f1:
-        #     airports = json.load(f1)
-        #     for a in airports:
-        #         ap = Airport(**a)
-        #         db.session.add(ap)
-        # db.session.commit()
-        #
-        # with open('data/flightRouteTypes.json', encoding='utf-8') as f2:
-        #     flight_route_types = json.load(f2)
-        #     for f in flight_route_types:
-        #         frt = FlightRouteType(**f)
-        #         db.session.add(frt)
-        # db.session.commit()
-        #
-        # with open('data/flightRoutes.json', encoding='utf-8') as f3:
-        #     flight_routes = json.load(f3)
-        #     for f in flight_routes:
-        #         fr = FlightRoute(**f)
-        #         db.session.add(fr)
-        # db.session.commit()
-        #
-        # with open('data/flights.json', encoding='utf-8') as f5:
-        #     flights = json.load(f5)
-        #     for f in flights:
-        #         fl = Flight(**f)
-        #         db.session.add(fl)
-        # db.session.commit()
+        import json
+        with open('data/airports.json', encoding='utf-8') as f1:
+            airports = json.load(f1)
+            for a in airports:
+                ap = Airport(**a)
+                db.session.add(ap)
+        db.session.commit()
+
+        with open('data/flightRouteTypes.json', encoding='utf-8') as f2:
+            flight_route_types = json.load(f2)
+            for f in flight_route_types:
+                frt = FlightRouteType(**f)
+                db.session.add(frt)
+        db.session.commit()
+
+        with open('data/flightRoutes.json', encoding='utf-8') as f3:
+            flight_routes = json.load(f3)
+            for f in flight_routes:
+                fr = FlightRoute(**f)
+                db.session.add(fr)
+        db.session.commit()
+
+        with open('data/planes.json', encoding='utf-8') as f4:
+            planes = json.load(f4)
+            for p in planes:
+                pl = Plane(**p)
+                db.session.add(pl)
+        db.session.commit()
+
+        with open('data/seatTypes.json', encoding='utf-8') as f5:
+            seatTypes = json.load(f5)
+            for s in seatTypes:
+                st = SeatType(**s)
+                db.session.add(st)
+        db.session.commit()
+
+        with open('data/seats.json', encoding='utf-8') as f6:
+            seats = json.load(f6)
+            for s in seats:
+                se = Seat(**s)
+                db.session.add(se)
+        db.session.commit()
+
+        with open('data/flights.json', encoding='utf-8') as f7:
+            flights = json.load(f7)
+            for f in flights:
+                fl = Flight(**f)
+                db.session.add(fl)
+        db.session.commit()
+
+        with open('data/tickets.json', encoding='utf-8') as f8:
+            tickets = json.load(f8)
+            for t in tickets:
+                tk = Ticket(**t)
+                db.session.add(tk)
+        db.session.commit()
+
+
 
         # import hashlib
         # from datetime import datetime
@@ -312,4 +343,3 @@ if __name__ == '__main__':
         # # Add all users to the session and commit
         # db.session.add_all([admin, employee, customer])
         # db.session.commit()
-
