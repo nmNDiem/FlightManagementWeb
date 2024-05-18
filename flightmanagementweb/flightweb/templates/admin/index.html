@@ -6,30 +6,40 @@
 
 <h2 class="text-center">Báo cáo doanh thu theo tháng</h2>
 
-<div class="col-md-4">
+<div class="col-md-4 mt-3">
     <label for="selectMonth" class="form-label">Chọn tháng:</label>
     <input type="date" class="form-control" id="selectMonth" name="selectMonth">
 </div>
 
-<div class="row">
+<div class="row mt-3">
     <div class="col-md-7 col-12">
         <table class="table">
             <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Tuyến bay</th>
-                    <th>Doanh thu</th>
-                    <th>Số lượt bay</th>
-                    <th>Tỷ lệ</th>
-                </tr>
+            <tr>
+                <th>STT</th>
+                <th>Tuyến bay</th>
+                <th>Doanh thu</th>
+                <th>Số lượt bay</th>
+                <th>Tỷ lệ</th>
+            </tr>
             </thead>
             <tbody>
-            <!-- Dữ liệu báo cáo sẽ được thêm vào đây bằng JavaScript -->
+            {% set idx = 1 %}
+            {% for data in stats %}
+            <tr>
+                <td>{{ idx }}</td>
+                <td>{{ data.route_name }}</td>
+                <td>{{ "{:,.0f}".format(data.total_revenue) }}</td>
+                <td>{{ data.total_flights }}</td>
+                <td>{{ "{:,.2f}".format((data.total_revenue / total_revenue) * 100) }}%</td>
+            </tr>
+            {% set idx = idx + 1 %}
+            {% endfor %}
             </tbody>
             <tfoot>
-                <tr>
-                    <td colspan="5">Tổng doanh thu:</td>
-                </tr>
+            <tr>
+                <td colspan="5" class="h5">Tổng doanh thu: {{ "{:,.0f}".format(total_revenue) }}</td>
+            </tr>
             </tfoot>
         </table>
     </div>
@@ -40,16 +50,22 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    let labels = [];
+    let data = [];
+    {% for s in stats %}
+        data.push({{ s.total_revenue }});
+        labels.push('{{ s.route_name }}');
+    {% endfor %}
     window.onload = function() {
         const ctx = document.getElementById('myChart');
 
         new Chart(ctx, {
           type: 'bar',
           data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: labels,
             datasets: [{
-              label: '# of Votes',
-              data: [12, 19, 3, 5, 2, 3],
+              label: '# Doanh thu',
+              data: data,
               borderWidth: 1
             }]
           },
