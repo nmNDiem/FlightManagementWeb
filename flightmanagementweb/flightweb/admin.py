@@ -142,3 +142,4 @@ admin.add_view(MyTicketView(Ticket, db.session))
 admin.add_view(ModelView(ReceiptDetails, db.session))
 admin.add_view(ModelView(Receipt, db.session))
 admin.add_view(LogoutView(name='Đăng xuất'))
+
