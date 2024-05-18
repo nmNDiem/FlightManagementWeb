@@ -192,11 +192,20 @@ class Ticket(db.Model):
     receipt_details = relationship('ReceiptDetails', backref='ticket', lazy=True)
 
 
+class PaymentMethod(db.Model):
+    id = Column(Integer, autoincrement=True, primary_key=True)
+    name = Column(String(30), nullable=False)
+    receipts = relationship('Receipt', backref='payment_method', lazy=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Receipt(db.Model):
     id = Column(Integer, autoincrement=True, primary_key=True)
     booking_time = Column(DateTime, default=datetime.now(), nullable=False)
-    payment_time = Column(DateTime)
-    payment_method = Column(String(30), nullable=False)
+    payment_time = Column(DateTime, nullable=False)
+    payment_method_id = Column(Integer, ForeignKey(PaymentMethod.id), nullable=False)
     customer_id = Column(Integer, ForeignKey(Customer.id), nullable=False)
     receipt_details = relationship('ReceiptDetails', backref='receipt', lazy=True)
 
