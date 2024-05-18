@@ -4,10 +4,14 @@ from sqlalchemy import and_, func, cast, Date
 from flightweb import db, app
 
 from models import SeatType, \
+
+ UpdateDatve
+from models import Employee, Admin, Customer, Flight, Airport, FlightRoute, ReceiptDetails, Ticket, Seat, SeatType, \
+
     PaymentMethod, Passenger
 
 from models import (Employee, Admin, Customer, Flight, Airport, FlightRoute, ReceiptDetails, Ticket,
-                    Receipt, Seat)
+                    Receipt, Seat) main
 
 
 
@@ -151,6 +155,7 @@ def count_flights_by_route(year=datetime.now().year, month=datetime.now().month)
             .group_by(FlightRoute.id).all())
 
 
+
 def stats_revenue_by_route():
     return (db.session.query(FlightRoute.id, FlightRoute.name,
                              func.sum(ReceiptDetails.unit_price * ReceiptDetails.quantity))
@@ -158,6 +163,26 @@ def stats_revenue_by_route():
             .join(Ticket, Ticket.flight_id.__eq__(Flight.id), isouter=True)
             .join(ReceiptDetails, ReceiptDetails.ticket_id.__eq__(Ticket.id), isouter=True)
             .group_by(FlightRoute.id)).all()
+
+
+# def count_flights_by_route_by_month(year=datetime.now().year, month=datetime.now().month):
+#     return (db.session.query(func.count(Flight.id))
+#             .join(FlightRoute, FlightRoute.id.__eq__(Flight.flight_route_id))
+#             .group_by(func.extract('month', Flight.departure_time), FlightRoute.id)
+#             .filter(func.extract('month', Flight.departure_time).__eq__(month)).all())
+#
+#
+# def get_total_revenue_by_month(year=datetime.now().year, month=datetime.now().month):
+#     query = (db.session.query(func.extract('year', Receipt.payment_time),
+#                               func.extract('month', Receipt.payment_time),
+#                               func.sum(ReceiptDetails.unit_price * ReceiptDetails.quantity))
+#              .join(ReceiptDetails, ReceiptDetails.receipt_id.__eq__(Receipt.id))
+#              .filter(func.extract('year', Receipt.payment_time).__eq__(year)
+#                      .__and__(func.extract('month', Receipt.payment_time).__eq__(month))))
+#
+#     return query.group_by(func.extract('year', Receipt.payment_time),
+#                           func.extract('month', Receipt.payment_time)).all()
+
 
 
 
