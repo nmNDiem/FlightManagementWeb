@@ -2,12 +2,17 @@ import hashlib
 from datetime import datetime
 from sqlalchemy import and_, func, cast, Date
 from flightweb import db, app
+
+from models import SeatType, \
+
  UpdateDatve
 from models import Employee, Admin, Customer, Flight, Airport, FlightRoute, ReceiptDetails, Ticket, Seat, SeatType, \
+
     PaymentMethod, Passenger
 
 from models import (Employee, Admin, Customer, Flight, Airport, FlightRoute, ReceiptDetails, Ticket,
                     Receipt, Seat) main
+
 
 
 def get_employee_by_id(id):
@@ -89,7 +94,6 @@ def get_airports():
     return Airport.query.all()
 
 
-
 def get_seat(flight_id, seat_type_id):
     # Tìm plane_id từ flight_id
     plane_id = db.session.query(Flight.plane_id).filter(Flight.id == flight_id).scalar()
@@ -149,7 +153,18 @@ def count_flights_by_route(year=datetime.now().year, month=datetime.now().month)
     return (db.session.query(FlightRoute.id, FlightRoute.name, func.count(Flight.id))
             .join(Flight, Flight.flight_route_id.__eq__(FlightRoute.id), isouter=True)
             .group_by(FlightRoute.id).all())
-=======
+
+
+
+def stats_revenue_by_route():
+    return (db.session.query(FlightRoute.id, FlightRoute.name,
+                             func.sum(ReceiptDetails.unit_price * ReceiptDetails.quantity))
+            .join(Flight, Flight.flight_route_id.__eq__(FlightRoute.id), isouter=True)
+            .join(Ticket, Ticket.flight_id.__eq__(Flight.id), isouter=True)
+            .join(ReceiptDetails, ReceiptDetails.ticket_id.__eq__(Ticket.id), isouter=True)
+            .group_by(FlightRoute.id)).all()
+
+
 # def count_flights_by_route_by_month(year=datetime.now().year, month=datetime.now().month):
 #     return (db.session.query(func.count(Flight.id))
 #             .join(FlightRoute, FlightRoute.id.__eq__(Flight.flight_route_id))
@@ -167,6 +182,7 @@ def count_flights_by_route(year=datetime.now().year, month=datetime.now().month)
 #
 #     return query.group_by(func.extract('year', Receipt.payment_time),
 #                           func.extract('month', Receipt.payment_time)).all()
+
 
 
 
@@ -219,3 +235,4 @@ def get_client_ip(request):
 if __name__ == '__main__':
     with app.app_context():
         print(get_seat_id(2))
+
