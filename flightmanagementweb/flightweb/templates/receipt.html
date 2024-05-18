@@ -1,0 +1,66 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Hóa đơn{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-image: url('/static/bgSearch/bg.jpg');
+    }
+    .cus {
+        display: flex;
+        border: none;
+        align-items: center;
+    }
+    .cus > div {
+        flex: 1;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+</style>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white" align="center">
+            <h2>Hóa đơn</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p><strong>Họ:</strong> {{ last_name }}</p>
+                    <p><strong>Tên:</strong> {{ first_name }}</p>
+                    <p><strong>CCCD/CMND:</strong> {{ cccd }}</p>
+                    <p><strong>Ngày sinh:</strong> {{ birthday }}</p>
+                    <p><strong>Giới tính:</strong> {{ 'Nam' if gender == 'true' else 'Nữ' }}</p>
+                    <p><strong>Email:</strong> {{ email }}</p>
+                    <p><strong>Số điện thoại:</strong> {{ phone_number }}</p>
+                    <p><strong>Phương thức thanh toán:</strong> {{ pay_method.name }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Tên chuyến bay:</strong> {{ flight.name }}</p>
+                    <p><strong>Ngày bay:</strong> {{ flight.departure_time.strftime("%d/%m/%Y") }}</p>
+                    <p><strong>Giờ khởi hành:</strong> {{ flight.departure_time.strftime("%H:%M") }}</p>
+                    <p><strong>Nơi đi:</strong> {{ departure.name }} ({{ departure.sign }})</p>
+                    <p><strong>Nơi đến:</strong> {{ destination.name }} ({{ destination.sign }})</p>
+                    <p><strong>loại ghế:</strong> {{ seat_type }}</p>
+                    <p><strong>Vị trí ghê:</strong> {{ seat.name }}</p>
+                </div>
+            </div>
+            <form method="post" action="/payment">
+                <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
+                {% if seat_type == 'business' %}
+                <input type="hidden" name="amount" value="{{ flight.price_seat1 }}">
+                {% else %}
+                <input type="hidden" name="amount" value="{{ flight.price_seat2 }}">
+                {% endif %}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Tiếp tục</button>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-center">
+            <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
