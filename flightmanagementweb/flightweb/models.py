@@ -50,7 +50,6 @@ class FlightRoute(db.Model):
     destination_airport = relationship('Airport', foreign_keys=[destination_airport_id],
                                        back_populates='flight_routes_destination')
     flights = relationship('Flight', backref='flight_route', lazy=True)
-    flight_schedules = relationship('FlightSchedule', backref='flight_route', lazy=True)
 
     def __str__(self):
         return self.name
@@ -59,12 +58,11 @@ class FlightRoute(db.Model):
 class Plane(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(20))
-    aircraft_license_plate = Column(String(7), nullable=False)
+    aircraft_license_plate = Column(String(7))
     seats_1 = Column(Integer)
     seats_2 = Column(Integer)
     seats = relationship('Seat', backref='plane', cascade='all, delete-orphan', lazy=True)
-    flights = relationship('Flight', secondary='flight_plane', lazy='subquery',
-                           backref=backref('planes_list', lazy=True))
+    flights = relationship('Flight', backref='plane', lazy=True)
 
     def __str__(self):
         return self.aircraft_license_plate
@@ -90,48 +88,31 @@ class Seat(db.Model):
         return self.name
 
 
-class FlightSchedule(db.Model):
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    flight_route_id = Column(Integer, ForeignKey(FlightRoute.id), nullable=False)
-    description = Column(String(30))
-    stop_points = relationship('StopPoint', backref='flight_schedule', lazy=True)
-    flights = relationship('Flight', backref='flight_schedule', lazy=True)
-
-    def __str__(self):
-        return self.description
-
-
-class StopPoint(db.Model):
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    name = Column(String(30))
-    airport_id = Column(Integer, ForeignKey(Airport.id), nullable=False)
-    stop_duration = Column(Integer, nullable=False)
-    flight_schedule_id = Column(Integer, ForeignKey(FlightSchedule.id), nullable=False)
-    stop_order = Column(Integer, nullable=False)
-
-    def __str__(self):
-        return self.name
-
-
 class Flight(db.Model):
     id = Column(Integer, autoincrement=True, primary_key=True)
     name = Column(String(50), nullable=False)
     flight_route_id = Column(Integer, ForeignKey(FlightRoute.id), nullable=False)
-    departure_time = Column(DateTime)
-    destination_time = Column(DateTime)
-    duration = Column(Integer)
-    flight_schedule_id = Column(Integer, ForeignKey(FlightSchedule.id))
-    planes = relationship('Plane', secondary='flight_plane', lazy='subquery',
-                          backref=backref('flights_list', lazy=True))
+    departure_time = Column(DateTime, nullable=False)
+    destination_time = Column(DateTime, nullable=False)
+    duration = Column(Float, nullable=False)
+    plane_id = Column(Integer, ForeignKey(Plane.id), nullable=False)
+    stop_points = relationship('Flight', backref='flight', lazy=True)
     tickets = relationship('Ticket', backref='flight', lazy=True)
 
     def __str__(self):
         return self.name
 
 
-flight_plane = db.Table('flight_plane',
-                        Column('flight_id', Integer, ForeignKey(Flight.id), primary_key=True),
-                        Column('plane_id', Integer, ForeignKey(Plane.id), primary_key=True))
+class StopPoint(db.Model):
+    id = Column(Integer, autoincrement=True, primary_key=True)
+    name = Column(String(30))
+    flight_id = Column(Integer, ForeignKey(Flight.id), nullable=False)
+    airport_id = Column(Integer, ForeignKey(Airport.id), nullable=False)
+    stop_duration = Column(Integer, nullable=False)
+    stop_order = Column(Integer, nullable=False)
+
+    def __str__(self):
+        return self.name
 
 
 class User(db.Model, UserMixin):
@@ -190,8 +171,8 @@ class Passenger(db.Model):
     name = Column(String(30), nullable=False)
     birthday = Column(DateTime, nullable=False)
     gender = Column(Boolean, nullable=False)
-    CCCD = Column(BigInteger, nullable=False)
-    phone_number = Column(BigInteger, nullable=False)
+    CCCD = Column(String(12), nullable=False)
+    phone_number = Column(String(10), nullable=False)
     email = Column(String(35), nullable=False)
     tickets = relationship('Ticket', backref='passenger', lazy=True)
 
@@ -255,6 +236,35 @@ class ReceiptDetails(db.Model):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
+
+        # import json
+        # with open('data/airports.json', encoding='utf-8') as f1:
+        #     airports = json.load(f1)
+        #     for a in airports:
+        #         ap = Airport(**a)
+        #         db.session.add(ap)
+        # db.session.commit()
+        #
+        # with open('data/flightRouteTypes.json', encoding='utf-8') as f2:
+        #     flight_route_types = json.load(f2)
+        #     for f in flight_route_types:
+        #         frt = FlightRouteType(**f)
+        #         db.session.add(frt)
+        # db.session.commit()
+        #
+        # with open('data/flightRoutes.json', encoding='utf-8') as f3:
+        #     flight_routes = json.load(f3)
+        #     for f in flight_routes:
+        #         fr = FlightRoute(**f)
+        #         db.session.add(fr)
+        # db.session.commit()
+        #
+        # with open('data/flights.json', encoding='utf-8') as f5:
+        #     flights = json.load(f5)
+        #     for f in flights:
+        #         fl = Flight(**f)
+        #         db.session.add(fl)
+        # db.session.commit()
 
         # import hashlib
         # from datetime import datetime
