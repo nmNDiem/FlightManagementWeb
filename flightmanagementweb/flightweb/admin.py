@@ -1,12 +1,12 @@
-from flask_admin import Admin, BaseView, expose
+from flask_admin import Admin, BaseView, expose, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_login import logout_user
 from flask import redirect
 
-from flightweb import app, db
+from flightweb import app, db, dao
 from models import (Flight, FlightRoute, FlightRouteType, Airport, Plane, Seat, SeatType,
                     StopPoint, StatisticalReport, Employee, Customer,
-                    Passenger, Ticket, ReceiptDetails, Receipt)
+                    Passenger, Ticket, ReceiptDetails, Receipt, PaymentMethod)
 
 
 class FlightView(ModelView):
@@ -115,7 +115,13 @@ class LogoutView(BaseView):
         return redirect('/admin')
 
 
-admin = Admin(app, name='Flight Management Website', template_mode='bootstrap4')
+class MyAdminIndexView(AdminIndexView):
+    @expose('/')
+    def index(self):
+        return self.render('admin/index.html')
+
+
+admin = Admin(app, name='Flight Management Website', template_mode='bootstrap4', index_view=MyAdminIndexView())
 admin.add_view(FlightView(Flight, db.session))
 # admin.add_view(FlightRouteView(FlightRoute, db.session))
 # admin.add_view(FlightRouteTypeView(FlightRouteType, db.session))
@@ -141,4 +147,5 @@ admin.add_view(ModelView(Customer, db.session))
 admin.add_view(MyTicketView(Ticket, db.session))
 admin.add_view(ModelView(ReceiptDetails, db.session))
 admin.add_view(ModelView(Receipt, db.session))
+admin.add_view(ModelView(PaymentMethod, db.session))
 admin.add_view(LogoutView(name='Đăng xuất'))
