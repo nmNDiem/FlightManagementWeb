@@ -1,0 +1,35 @@
+[{
+    "id" : 1,
+    "quantity" : 1,
+    "unit_price" : 3000000,
+    "ticket_id" : 17,
+    "receipt_id" : 1
+},
+{
+    "id" : 2,
+    "quantity" : 1,
+    "unit_price" : 4000000,
+    "ticket_id" : 2,
+    "receipt_id" : 2
+},
+{
+    "id" : 3,
+    "quantity" : 1,
+    "unit_price" : 3000000,
+    "ticket_id" : 15,
+    "receipt_id" : 3
+},
+{
+    "id" : 4,
+    "quantity" : 1,
+    "unit_price" : 4000000,
+    "ticket_id" : 6,
+    "receipt_id" : 4
+},
+{
+    "id" : 5,
+    "quantity" : 1,
+    "unit_price" : 3000000,
+    "ticket_id" : 18,
+    "receipt_id" : 5
+}]
