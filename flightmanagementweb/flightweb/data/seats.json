@@ -1,0 +1,101 @@
+[{
+    "id" : 1,
+    "name" : "01A",
+    "seat_type_id" : 1,
+    "plane_id" : 1
+},{
+    "id" : 2,
+    "name" : "01D",
+    "seat_type_id" : 1,
+    "plane_id" : 2
+},{
+    "id" : 3,
+    "name" : "02B",
+    "seat_type_id" : 1,
+    "plane_id" : 3
+},{
+    "id" : 4,
+    "name" : "05C",
+    "seat_type_id" : 1,
+    "plane_id" : 4
+},{
+    "id" : 5,
+    "name" : "07F",
+    "seat_type_id" : 1,
+    "plane_id" : 1
+},{
+    "id" : 6,
+    "name" : "08A",
+    "seat_type_id" : 1,
+    "plane_id" : 2
+},{
+    "id" : 7,
+    "name" : "11E",
+    "seat_type_id" : 1,
+    "plane_id" : 3
+},{
+    "id" : 8,
+    "name" : "13B",
+    "seat_type_id" : 1,
+    "plane_id" : 4
+},{
+    "id" : 9,
+    "name" : "13C",
+    "seat_type_id" : 1,
+    "plane_id" : 1
+},{
+    "id" : 10,
+    "name" : "15A",
+    "seat_type_id" : 1,
+    "plane_id" : 2
+},{
+    "id" : 11,
+    "name" : "15C",
+    "seat_type_id" : 2,
+    "plane_id" : 3
+},{
+    "id" : 12,
+    "name" : "18B",
+    "seat_type_id" : 2,
+    "plane_id" : 4
+},{
+    "id" : 13,
+    "name" : "18C",
+    "seat_type_id" : 2,
+    "plane_id" : 1
+},{
+    "id" : 14,
+    "name" : "18D",
+    "seat_type_id" : 2,
+    "plane_id" : 2
+},{
+    "id" : 15,
+    "name" : "19F",
+    "seat_type_id" : 2,
+    "plane_id" : 3
+},{
+    "id" : 16,
+    "name" : "20D",
+    "seat_type_id" : 2,
+    "plane_id" : 4
+},{
+    "id" : 17,
+    "name" : "24A",
+    "seat_type_id" : 2,
+    "plane_id" : 1
+},{
+    "id" : 18,
+    "name" : "25E",
+    "seat_type_id" : 2,
+    "plane_id" : 2
+},{
+    "id" : 19,
+    "name" : "25F",
+    "seat_type_id" : 2,
+    "plane_id" : 3
+},{
+    "id" : 20,
+    "name" : "29B",
+    "seat_type_id" : 2,
+    "plane_id" : 4
+}]

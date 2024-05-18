@@ -1,0 +1,43 @@
+[{
+    "id" : 1,
+    "name" : "Hồ Chí Minh - Hà Nội",
+    "flight_route_type_id" : 1,
+    "departure_airport_id" : 2,
+    "destination_airport_id" : 1
+},{
+    "id" : 2,
+    "name" : "Nha Trang - Đà Nẵng",
+    "flight_route_type_id" : 1,
+    "departure_airport_id" : 4,
+    "destination_airport_id" : 3
+},{
+    "id" : 3,
+    "name" : "Hồ Chí Minh - Phú Quốc",
+    "flight_route_type_id" : 1,
+    "departure_airport_id" : 2,
+    "destination_airport_id" : 5
+},{
+    "id" : 4,
+    "name" : "Hồ Chí Minh - Mỹ",
+    "flight_route_type_id" : 2,
+    "departure_airport_id" : 2,
+    "destination_airport_id" : 7
+},{
+    "id" : 5,
+    "name" : "Hà Nội - Dubai",
+    "flight_route_type_id" : 2,
+    "departure_airport_id" : 1,
+    "destination_airport_id" : 9
+},{
+    "id" : 6,
+    "name" : "Hồ Chí Minh - Nhật Bản",
+    "flight_route_type_id" : 2,
+    "departure_airport_id" : 2,
+    "destination_airport_id" : 6
+},{
+    "id" : 7,
+    "name" : "Đà Nẵng - Pháp",
+    "flight_route_type_id" : 2,
+    "departure_airport_id" : 3,
+    "destination_airport_id" : 10
+}]

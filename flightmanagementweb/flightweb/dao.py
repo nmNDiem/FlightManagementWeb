@@ -2,7 +2,7 @@ import hashlib
 from datetime import datetime
 from sqlalchemy import and_, func
 from flightweb import db, app
-from models import Employee, Admin, Customer, Flight, Airport, FlightRoute, ReceiptDetails, Ticket
+from models import Employee, Admin, Customer, Flight, Airport, FlightRoute, ReceiptDetails, Ticket, Seat, SeatType
 
 
 def get_employee_by_id(id):
@@ -103,4 +103,4 @@ def get_total_revenue_by_month(year=datetime.now().year, month=datetime.now().mo
 
 if __name__ == '__main__':
     with app.app_context():
-        print(stats_revenue_by_route())
+        print(count_flights_by_route())

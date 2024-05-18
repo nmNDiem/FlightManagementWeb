@@ -1,0 +1,25 @@
+[{
+    "id"  : 1,
+    "name"  : "A321",
+    "aircraft_license_plate"  : "",
+    "seats_1"  : 84,
+    "seats_2"  : 96
+},{
+    "id"  : 2,
+    "name"  : "B787",
+    "aircraft_license_plate"  : "",
+    "seats_1"  : 80,
+    "seats_2"  : 100
+},{
+    "id"  : 3,
+    "name"  : "A350",
+    "aircraft_license_plate"  : "",
+    "seats_1"  : 84,
+    "seats_2"  : 96
+},{
+    "id"  : 4,
+    "name"  : "A330",
+    "aircraft_license_plate"  : "",
+    "seats_1"  : 84,
+    "seats_2"  : 96
+}]
