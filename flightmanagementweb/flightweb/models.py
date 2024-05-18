@@ -137,8 +137,8 @@ class Admin(User):
 
 
 class Employee(User):
-    phone_number = Column(BigInteger, nullable=False)
-    CCCD = Column(BigInteger, nullable=False)
+    phone_number = Column(String(10), nullable=False)
+    CCCD = Column(String(12), nullable=False)
     birthday = Column(DateTime, nullable=False)
     gender = Column(Boolean, nullable=False)
     tickets = relationship('Ticket', backref='employee', lazy=True)
@@ -148,7 +148,7 @@ class Employee(User):
 
 
 class Customer(User):
-    phone_number = Column(BigInteger)
+    phone_number = Column(String(10))
     birthday = Column(DateTime)
     gender = Column(Boolean, nullable=True)
     receipts = relationship('ReceiptUser', backref='customer', lazy=True)
@@ -219,7 +219,7 @@ class ReceiptUser(Receipt):
 class ReceiptGuest(Receipt):
     id = Column(Integer, autoincrement=True, primary_key=True)
     name = Column(String(50), nullable=False)
-    phone_number = Column(Integer, nullable=False)
+    phone_number = Column(String(10), nullable=False)
     email = Column(String(35), nullable=False)
     payment_method = Column(Integer, ForeignKey(PaymentMethod.id), nullable=False)
     receipt_details = relationship('ReceiptDetails', backref='receipt_guest', lazy=True)
@@ -238,55 +238,55 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
 
-        import json
-        with open('data/airports.json', encoding='utf-8') as f1:
-            airports = json.load(f1)
-            for a in airports:
-                ap = Airport(**a)
-                db.session.add(ap)
-        db.session.commit()
-
-        with open('data/flightRouteTypes.json', encoding='utf-8') as f2:
-            flight_route_types = json.load(f2)
-            for f in flight_route_types:
-                frt = FlightRouteType(**f)
-                db.session.add(frt)
-        db.session.commit()
-
-        with open('data/flightRoutes.json', encoding='utf-8') as f3:
-            flight_routes = json.load(f3)
-            for f in flight_routes:
-                fr = FlightRoute(**f)
-                db.session.add(fr)
-        db.session.commit()
-
-        with open('data/planes.json', encoding='utf-8') as f4:
-            planes = json.load(f4)
-            for p in planes:
-                pl = Plane(**p)
-                db.session.add(pl)
-        db.session.commit()
-
-        with open('data/seatTypes.json', encoding='utf-8') as f5:
-            seatTypes = json.load(f5)
-            for s in seatTypes:
-                st = SeatType(**s)
-                db.session.add(st)
-        db.session.commit()
-
-        with open('data/seats.json', encoding='utf-8') as f6:
-            seats = json.load(f6)
-            for s in seats:
-                se = Seat(**s)
-                db.session.add(se)
-        db.session.commit()
-
-        with open('data/flights.json', encoding='utf-8') as f7:
-            flights = json.load(f7)
-            for f in flights:
-                fl = Flight(**f)
-                db.session.add(fl)
-        db.session.commit()
+        # import json
+        # with open('data/airports.json', encoding='utf-8') as f1:
+        #     airports = json.load(f1)
+        #     for a in airports:
+        #         ap = Airport(**a)
+        #         db.session.add(ap)
+        # db.session.commit()
+        #
+        # with open('data/flightRouteTypes.json', encoding='utf-8') as f2:
+        #     flight_route_types = json.load(f2)
+        #     for f in flight_route_types:
+        #         frt = FlightRouteType(**f)
+        #         db.session.add(frt)
+        # db.session.commit()
+        #
+        # with open('data/flightRoutes.json', encoding='utf-8') as f3:
+        #     flight_routes = json.load(f3)
+        #     for f in flight_routes:
+        #         fr = FlightRoute(**f)
+        #         db.session.add(fr)
+        # db.session.commit()
+        #
+        # with open('data/planes.json', encoding='utf-8') as f4:
+        #     planes = json.load(f4)
+        #     for p in planes:
+        #         pl = Plane(**p)
+        #         db.session.add(pl)
+        # db.session.commit()
+        #
+        # with open('data/seatTypes.json', encoding='utf-8') as f5:
+        #     seatTypes = json.load(f5)
+        #     for s in seatTypes:
+        #         st = SeatType(**s)
+        #         db.session.add(st)
+        # db.session.commit()
+        #
+        # with open('data/seats.json', encoding='utf-8') as f6:
+        #     seats = json.load(f6)
+        #     for s in seats:
+        #         se = Seat(**s)
+        #         db.session.add(se)
+        # db.session.commit()
+        #
+        # with open('data/flights.json', encoding='utf-8') as f7:
+        #     flights = json.load(f7)
+        #     for f in flights:
+        #         fl = Flight(**f)
+        #         db.session.add(fl)
+        # db.session.commit()
 
         # with open('data/tickets.json', encoding='utf-8') as f8:
         #     tickets = json.load(f8)
