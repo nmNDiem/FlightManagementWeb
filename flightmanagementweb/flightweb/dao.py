@@ -2,7 +2,8 @@ import hashlib
 from datetime import datetime
 from sqlalchemy import and_, func
 from flightweb import db, app
-from models import Employee, Admin, Customer, Flight, Airport, FlightRoute, ReceiptDetails, Ticket, Seat, SeatType
+from models import (Employee, Admin, Customer, Flight, Airport, FlightRoute, ReceiptDetails, Ticket,
+                    Receipt, Seat)
 
 
 def get_employee_by_id(id):
@@ -73,10 +74,11 @@ def get_airports():
     return Airport.query.all()
 
 
-def count_flights_by_route(year=datetime.now().year, month=datetime.now().month):
-    return (db.session.query(FlightRoute.id, FlightRoute.name, func.count(Flight.id))
-            .join(Flight, Flight.flight_route_id.__eq__(FlightRoute.id), isouter=True)
-            .group_by(FlightRoute.id).all())
+def count_flights_by_route_by_month(year=datetime.now().year, month=datetime.now().month):
+    return (db.session.query(func.extract('month', Flight.departure_time), FlightRoute.name, func.count(Flight.id))
+            .join(FlightRoute, FlightRoute.id.__eq__(Flight.flight_route_id))
+            .group_by(func.extract('month', Flight.departure_time), FlightRoute.name)
+            .filter(func.extract('month', Flight.departure_time).__eq__(month)).all())
 
 
 def stats_revenue_by_route():
@@ -93,14 +95,16 @@ def stats_revenue_by_month(year=datetime.now().year, month=datetime.now().month)
 
 
 def get_total_revenue_by_month(year=datetime.now().year, month=datetime.now().month):
-    query = (db.session.query(func.extract('year', ReceiptDetails.create_date),
-                              func.extract('month', ReceiptDetails.create_date),
+    query = (db.session.query(func.extract('year', Receipt.payment_time),
+                              func.extract('month', Receipt.payment_time),
                               func.sum(ReceiptDetails.unit_price * ReceiptDetails.quantity))
-             .filter(func.extract('month', ReceiptDetails.create_date).__eq__(year)
-                     .__and__(func.extract('month', ReceiptDetails.create_date).__eq__(month))))
-    return query
+             .join(ReceiptDetails, ReceiptDetails.receipt_id.__eq__(Receipt.id))
+             .filter(func.extract('year', Receipt.payment_time).__eq__(year)
+                     .__and__(func.extract('month', Receipt.payment_time).__eq__(month))))
+    return query.group_by(func.extract('year', Receipt.payment_time),
+                          func.extract('month', Receipt.payment_time)).all()
 
 
 if __name__ == '__main__':
     with app.app_context():
-        print(count_flights_by_route())
+        print(get_total_revenue_by_month(month=3))

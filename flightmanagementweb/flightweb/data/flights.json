@@ -53,7 +53,7 @@
     "name": "Hồ Chí Minh - Phú Quốc",
     "flight_route_id" : 3,
     "departure_time" : "2024-06-27 01:20:00",
-    "destination_time" : "2024-05-27 03:20:00",
+    "destination_time" : "2024-06-27 03:20:00",
     "duration" : 2,
     "plane_id" : 2,
     "price_seat1" : 4000000,
